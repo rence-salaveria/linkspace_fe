@@ -11,8 +11,32 @@ import {Label} from "@/components/ui/label"
 import {FaLink} from "react-icons/fa6";
 import {Field, Form, Formik} from "formik";
 import toast from "react-hot-toast";
+import axios from "@/lib/axios.ts";
 
 export function LoginForm() {
+  type LoginCredentials = {
+    username: string,
+    password: string
+  }
+  const login = async (values: LoginCredentials) => {
+    try {
+      const response = await toast.promise(axios.post("/user/login", values), {
+        success: "Logged in successfully",
+        error: "Failed to login",
+        loading: "Logging in..."
+      })
+
+      if (response.data.payload) {
+        localStorage.setItem("token", response.data.payload.token)
+        localStorage.setItem("user", JSON.stringify(response.data.payload.user))
+        window.location.reload()
+      }
+    } catch (e) {
+      console.log(e)
+      toast.error("Failed to login")
+    }
+  }
+
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader>
@@ -22,10 +46,16 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Formik initialValues={{
+        <Formik<LoginCredentials> initialValues={{
           username: "",
           password: "",
-        }} onSubmit={async (values) => toast(`${values.password}, ${values.username}`)}>
+        }} onSubmit={async (values) => {
+          try {
+            await login(values)
+          } catch (e) {
+            toast.error("Failed to login")
+          }
+        }}>
           <Form>
             <div className="grid gap-4">
               <div className="grid gap-2">
