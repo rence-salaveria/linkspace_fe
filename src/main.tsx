@@ -9,9 +9,9 @@ const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
   <div className="font-body bg-gradient-to-b from-primary to-white h-screen">
+    <Toaster/>
     <QueryClientProvider client={queryClient}>
       <StrictMode>
-        <Toaster/>
         <AppRouter/>
       </StrictMode>
     </QueryClientProvider>
