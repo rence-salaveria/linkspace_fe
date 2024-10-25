@@ -34,8 +34,6 @@ export function Dashboard() {
     },
   })
 
-  console.log(data)
-
   return (
     <div className="flex min-h-screen flex-col items-center">
       <Navbar/>
