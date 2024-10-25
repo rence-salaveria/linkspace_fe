@@ -4,12 +4,12 @@ const instance = axios.create({
   baseURL: "http://localhost:8000/api"
 });
 
-// Add a request interceptor to include the token
+// Add a request interceptor to include the user information
 instance.interceptors.request.use(
   config => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    const user = localStorage.getItem('user');
+    if (user) {
+      config.headers['X-User-Info'] = user;
     }
     return config;
   },

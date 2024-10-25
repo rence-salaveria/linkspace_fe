@@ -7,14 +7,41 @@ import {
 
 import Navbar from "@/components/Navbar.tsx";
 import {FaFile, FaIdCard, FaRegClock, FaRegCopy, FaRegRectangleList} from "react-icons/fa6";
+import {useQuery} from "@tanstack/react-query";
+import axios from "@/lib/axios.ts";
+import {useState} from "react";
+import {User} from "@/types/user.ts";
+
+type DashboardData = {
+  history: number,
+  todayConsultation: number,
+  consultation: number,
+  student: number,
+  audit: number,
+}
 
 export function Dashboard() {
+  const [user] = useState<User>(JSON.parse(localStorage.getItem("user") || "{}"));
+  const {data} = useQuery<DashboardData>({
+    queryKey: ['dashboard'],
+    queryFn: async () => {
+      const res = await axios.get('/dashboard-info')
+      if (res) {
+        return res.data.payload
+      } else {
+        console.error("No dashboard data")
+      }
+    },
+  })
+
+  console.log(data)
+
   return (
     <div className="flex min-h-screen flex-col items-center">
       <Navbar/>
       <main className="flex-1 w-full flex justify-center">
         <div className="container py-6">
-          <h1 className="mb-6 mt-6 text-3xl font-bold text-white">Welcome, Clarence!</h1>
+          <h1 className="mb-6 mt-6 text-3xl font-bold text-white">Welcome, {user.fullName}!</h1>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -22,7 +49,7 @@ export function Dashboard() {
                 <FaIdCard className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">1,234</div>
+                <div className="text-2xl font-bold">{data!.student || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   currently encoded
                 </p>
@@ -36,7 +63,7 @@ export function Dashboard() {
                 <FaRegCopy className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">567</div>
+                <div className="text-2xl font-bold">{data!.consultation || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   currently recorded
                 </p>
@@ -50,7 +77,7 @@ export function Dashboard() {
                 <FaRegClock className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">89</div>
+                <div className="text-2xl font-bold">{data!.todayConsultation || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   this day
                 </p>
@@ -64,7 +91,7 @@ export function Dashboard() {
                 <FaFile className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">3,456</div>
+                <div className="text-2xl font-bold">{data!.history || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   records available
                 </p>
@@ -78,7 +105,7 @@ export function Dashboard() {
                 <FaRegRectangleList className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">3,456</div>
+                <div className="text-2xl font-bold">{data!.audit || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   operations logged
                 </p>
