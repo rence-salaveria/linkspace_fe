@@ -33,7 +33,7 @@ export function LoginForm() {
       }
     } catch (e) {
       console.log(e)
-      toast.error("Failed to login")
+      toast.error("Something went wrong")
     }
   }
 

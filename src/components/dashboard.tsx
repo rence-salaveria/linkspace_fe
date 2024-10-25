@@ -11,6 +11,7 @@ import {useQuery} from "@tanstack/react-query";
 import axios from "@/lib/axios.ts";
 import {useState} from "react";
 import {User} from "@/types/user.ts";
+import {useNavigate} from "react-router-dom";
 
 type DashboardData = {
   history: number,
@@ -22,6 +23,8 @@ type DashboardData = {
 
 export function Dashboard() {
   const [user] = useState<User>(JSON.parse(localStorage.getItem("user") || "{}"));
+  const navigate = useNavigate();
+
   const {data} = useQuery<DashboardData>({
     queryKey: ['dashboard'],
     queryFn: async () => {
@@ -41,19 +44,26 @@ export function Dashboard() {
         <div className="container py-6">
           <h1 className="mb-6 mt-6 text-3xl font-bold text-white">Welcome, {user.fullName}!</h1>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <Card>
+            <Card
+              onClick={() => navigate('/table/students')}
+              className="transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Students</CardTitle>
                 <FaIdCard className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data!.student || 0}</div>
+                <div className="text-2xl font-bold">{data?.student || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   currently encoded
                 </p>
               </CardContent>
             </Card>
-            <Card>
+
+            <Card
+              onClick={() => navigate('/table/consultations')}
+              className="transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Consultations
@@ -61,13 +71,17 @@ export function Dashboard() {
                 <FaRegCopy className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data!.consultation || 0}</div>
+                <div className="text-2xl font-bold">{data?.consultation || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   currently recorded
                 </p>
               </CardContent>
             </Card>
-            <Card>
+
+            <Card
+              onClick={() => navigate('/table/today-consultations')}
+              className="transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Upcoming Consultations
@@ -75,13 +89,17 @@ export function Dashboard() {
                 <FaRegClock className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data!.todayConsultation || 0}</div>
+                <div className="text-2xl font-bold">{data?.todayConsultation || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   this day
                 </p>
               </CardContent>
             </Card>
-            <Card>
+
+            <Card
+              onClick={() => navigate('/table/consultation-history')}
+              className="transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Consultation History
@@ -89,13 +107,17 @@ export function Dashboard() {
                 <FaFile className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data!.history || 0}</div>
+                <div className="text-2xl font-bold">{data?.history || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   records available
                 </p>
               </CardContent>
             </Card>
-            <Card>
+
+            <Card
+              onClick={() => navigate('/table/audit-trail')}
+              className="transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Audit Trail
@@ -103,7 +125,7 @@ export function Dashboard() {
                 <FaRegRectangleList className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data!.audit || 0}</div>
+                <div className="text-2xl font-bold">{data?.audit || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   operations logged
                 </p>
