@@ -1,0 +1,15 @@
+.filepond--root {
+    max-height: 5em;
+}
+
+.filepond--root, .filepond--root .filepond--drop-label {
+    height: 5em;
+}
+
+.accordion-button.collapsed {
+    background-color: #F9FAFB;
+}
+
+* {
+    font-family: "Poppins", sans-serif;
+}

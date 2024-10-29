@@ -6,6 +6,7 @@ import StudentsTable from "@/modules/students/StudentsTable.tsx";
 import TodayConsultationsTable from "@/modules/consultation/TodayConsultationsTable.tsx";
 import ConsultationHistoryTable from "@/modules/consultation/ConsultationHistoryTable.tsx";
 import AuditTrailTable from "@/modules/audit/AuditTrailTable.tsx";
+import AddStudent from "@/modules/students/AddStudent.tsx";
 
 function AppRouter() {
   const user = localStorage.getItem("user");
@@ -22,6 +23,10 @@ function AppRouter() {
           <Route path="/table/today-consultations" element={<TodayConsultationsTable />} />
           <Route path="/table/consultation-history" element={<ConsultationHistoryTable />} />
           <Route path="/table/audit-trail" element={<AuditTrailTable />} />
+        </Route>
+
+        <Route path="/add" element={<Outlet />}>
+          <Route path="/add/student" element={<AddStudent />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" />} />
