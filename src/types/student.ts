@@ -108,7 +108,7 @@ export interface StudentFormFields {
   spouseName?: string;
   spouseOccupation?: string;
   birthOrder: number;
-  brotherCount: string;
+  brotherCount: number;
   sisterCount: number;
   totalSiblings: number;
   livingWith: "parent" | "guardian" | "others" | string;
