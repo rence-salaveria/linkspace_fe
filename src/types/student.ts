@@ -103,7 +103,7 @@ export interface StudentFormFields {
   permanentAddress?: string;
   permanentContactNumber?: string;
   residency: "owned" | "rent" | "others" | string;
-  civilStatus: "single" | "married" | "widowed" | "separated" | "annulled";
+  civilStatus: "single" | "married" | "widowed" | "separated" | "annulled" | string;
   religion: string;
   spouseName?: string;
   spouseOccupation?: string;

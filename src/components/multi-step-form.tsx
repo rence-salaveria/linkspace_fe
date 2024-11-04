@@ -185,8 +185,8 @@ export function MultiStepFormComponent() {
             <div className="flex justify-between">
               {steps.map((label, index) => (
                 <div key={label} className="text-center">
-                <div
-                  className={`w-10 h-10 mx-auto rounded-full text-lg flex items-center justify-center ${step > index ? 'bg-primary text-white' : 'bg-white border-2 border-gray-200'}`}>
+                  <div
+                    className={`w-10 h-10 mx-auto rounded-full text-lg flex items-center justify-center ${step > index ? 'bg-primary text-white' : 'bg-white border-2 border-gray-200'}`}>
                     <span>{index + 1}</span>
                   </div>
                   <div className="text-xs mt-2">{label}</div>
@@ -455,7 +455,7 @@ export function MultiStepFormComponent() {
                   value={studentFormData.livingWith}
                   onValueChange={(value) => {
                     setStudentFormData({...studentFormData, livingWith: value});
-                    if (value === 'others') setIsLivingWithOthers(true);
+                    setIsLivingWithOthers(value === 'others');
                   }}
                 >
                   <SelectTrigger>
@@ -470,8 +470,8 @@ export function MultiStepFormComponent() {
                 </Select>
                 {isLivingWithOthers && (
                   <Input
-                    value={studentFormData.livingWith}
-                    onChange={(e) => setStudentFormData({...studentFormData, livingWith: e.target.value})}
+                    value={othersResidency}
+                    onChange={(e) => setOthersResidency(e.target.value)}
                     placeholder="Specify other living arrangement"
                   />
                 )}
