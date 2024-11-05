@@ -78,7 +78,7 @@ export interface EducBackground {
 
 export interface InstitutionalAffiliation {
   year: string;
-  status: string;
+  status: boolean;
   affiliation: string;
   organization: string;
 }

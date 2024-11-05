@@ -15,7 +15,7 @@ const AddStudent = () => {
           </Button>
         </Link>
       </div>
-      <div className="container">
+      <div className="container mb-24">
         <MultiStepFormComponent/>
       </div>
     </div>

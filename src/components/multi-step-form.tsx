@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
@@ -8,13 +8,7 @@ import {Textarea} from "@/components/ui/textarea"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import AttachmentField from "@/modules/students/AttachmentField.tsx";
 import {StudentFormFields} from "@/types/student.ts";
-
-type Experience = {
-  company: string;
-  years: string;
-  role: string;
-  [key: string]: string; // Add index signature
-}
+import Creatable, { useCreatable } from 'react-select/creatable';
 
 export function MultiStepFormComponent() {
   const [step, setStep] = useState(1)
@@ -102,26 +96,36 @@ export function MultiStepFormComponent() {
     educStatus: '', // checkbox group with the values Freshman, Transferee, Second Course, Regular/Irregular, Working Student
 
     // make this a table with the following columns Level, School Name, Address, Year Graduated, Honor/s
-    // the Level column has the following values: Tertiary, Alternative Learning System, Secondary, Elementary and the other columns are text fields
-    educBackground: [],
+    // the Level column has the following values: Tertiary, Alternative Learning System, Secondary, Elementary and the other columns are text fields (max 3)
+    educBackground: [
+      {level: 'Tertiary', year: '', address: '', honors: '', schoolName: ''},
+      {level: 'Alternative Learning System', year: '', address: '', honors: '', schoolName: ''},
+      {level: 'Secondary', year: '', address: '', honors: '', schoolName: ''},
+      {level: 'Elementary', year: '', address: '', honors: '', schoolName: ''}
+    ],
 
     // make this a radio button group with the values Yes and No and show a text field if Yes that corresponds to the educAssistanceInfo
     educAssistance: 0,
     educAssistanceInfo: '',
 
-    // make this a table with the columns: Organization, Affiliation, Year/s, and a checkbox if currently active
-    institutionalAffiliations: [],
+    // make this a table with the columns: Organization, Affiliation, Year/s, and a checkbox if currently active (max 3)
+    institutionalAffiliations: [
+      {organization: '', affiliation: '', year: '', status: false},
+      {organization: '', affiliation: '', year: '', status: false},
+      {organization: '', affiliation: '', year: '', status: false},
+    ],
 
-    // make this a table with the columns: Company, Position, Role
-    workExperience: [],
+    // make this a table with the columns: Company, Position, Role (max 3)
+    workExperience: [
+      {companyName: '', position: '', dateRange: ''},
+      {companyName: '', position: '', dateRange: ''},
+      {companyName: '', position: '', dateRange: ''},
+    ],
 
     // make this part in the fourth
-    // make this a multiselect dropdown that you can input to create new items
-    interest: [],
-    // make this a multiselect dropdown that you can input to create new items
-    talents: [],
-    // make this a multiselect dropdown that you can input to create new items
-    characteristics: [],
+    interest: [] as string[],
+    talents: [] as string[],
+    characteristics: [] as string[],
     selfImageAnswer: '', // text box
     selfMotivationAnswer: '', // text box
     decisionMakingAnswer: '', // text box
@@ -133,39 +137,17 @@ export function MultiStepFormComponent() {
     }
   });
 
-  const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    email: '',
-    file: null as File | null,
-    preferences: [] as string[], // Ensure preferences is string[]
-    employmentStatus: '',
-    experience: [{company: '', years: '', role: ''}] as Experience[],
-    additionalInfo: '',
-    country: '',
-    termsAccepted: false
-  })
+  useEffect(() => {
+    console.group('Student form data');
+    console.log(studentFormData, new Date());
+    console.groupEnd();
+  }, [studentFormData]);
+
   const [file, setFile] = useState<{ file: string; path: string }[]>([]);
-
-  const updateFormData = (field: string, value: string | boolean | string[] | File | null) => {
-    setFormData(prev => ({...prev, [field]: value}))
-  }
-
-  const addExperience = () => {
-    setFormData(prev => ({
-      ...prev,
-      experience: [...prev.experience, {company: '', years: '', role: ''}]
-    }))
-  }
-
-  const updateExperience = (index: number, field: string, value: string) => {
-    const newExperience = [...formData.experience]
-    newExperience[index][field] = value
-    setFormData(prev => ({...prev, experience: newExperience}))
-  }
+  const [isTermsChecked, setIsTermsChecked] = useState(false)
 
   const handleSubmit = async () => {
-    console.log('Form submitted:', {...formData, file})
+    console.log('Form submitted:', {...studentFormData, file})
   }
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 5))
@@ -256,12 +238,14 @@ export function MultiStepFormComponent() {
                   onValueChange={(value) => setStudentFormData({...studentFormData, gender: value})}
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="male" id="male"/>
-                    <Label htmlFor="male">Male</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="female" id="female"/>
-                    <Label htmlFor="female">Female</Label>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="male" id="male"/>
+                      <Label htmlFor="male">Male</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="female" id="female"/>
+                      <Label htmlFor="female">Female</Label>
+                    </div>
                   </div>
                 </RadioGroup>
               </div>
@@ -482,106 +466,442 @@ export function MultiStepFormComponent() {
 
         {step === 2 && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Preferences</h2>
-            <div>
-              <Label>Interests (Check all that apply)</Label>
-              <div className="space-y-2">
-                {['Technology', 'Sports', 'Music', 'Travel', 'Food'].map((interest) => (
-                  <div key={interest} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={interest}
-                      checked={formData.preferences.includes(interest)}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          updateFormData('preferences', [...formData.preferences, interest])
-                        } else {
-                          updateFormData('preferences', formData.preferences.filter(i => i !== interest))
-                        }
-                      }}
-                    />
-                    <label htmlFor={interest}>{interest}</label>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <Label>Employment Status</Label>
-              <RadioGroup
-                value={formData.employmentStatus}
-                onValueChange={(value) => updateFormData('employmentStatus', value)}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="employed" id="employed"/>
-                  <Label htmlFor="employed">Employed</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="unemployed" id="unemployed"/>
-                  <Label htmlFor="unemployed">Unemployed</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="student" id="student"/>
-                  <Label htmlFor="student">Student</Label>
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Experience</h2>
+            <h2 className="text-xl font-semibold mb-4">Family Background</h2>
             <table className="w-full">
               <thead>
               <tr>
-                <th className="text-left">Company</th>
-                <th className="text-left">Years</th>
-                <th className="text-left">Role</th>
+                <th className="w-2/12"></th>
+                <th className="w-5/12 text-left">Father</th>
+                <th className="w-5/12 text-left">Mother</th>
               </tr>
               </thead>
               <tbody>
-              {formData.experience.map((exp, index) => (
+              <tr>
+                <td></td>
+                <td className="gap-2 items-center">
+                  <Checkbox
+                    id="fatherLiving"
+                    checked={studentFormData.fatherLiving === 1}
+                    onCheckedChange={(checked) => setStudentFormData({...studentFormData, fatherLiving: checked ? 1 : 0})}
+                  />
+                  <Label htmlFor="fatherLiving">Living</Label>
+                </td>
+                <td className="gap-2 items-center">
+                  <Checkbox
+                    id="motherLiving"
+                    checked={studentFormData.motherLiving === 1}
+                    onCheckedChange={(checked) => setStudentFormData({...studentFormData, motherLiving: checked ? 1 : 0})}
+                  />
+                  <Label htmlFor="motherLiving">Living</Label>
+                </td>
+              </tr>
+              {['Name', 'Nationality', 'Religion', 'Educational Attainment', 'Occupation', 'Company', 'Birthdate', 'Contact Number'].map((field, index) => (
                 <tr key={index}>
-                  <td>
+                  <td className="w-2/12">{field}</td>
+                  <td className="w-5/12">
                     <Input
-                      value={exp.company}
-                      onChange={(e) => updateExperience(index, 'company', e.target.value)}
-                      placeholder="Company name"
+                      id={`father${field.replace(/\s+/g, '')}`}
+                      type={field === 'Birthdate' ? 'date' : 'text'}
+                      value={studentFormData[`father${field.replace(/\s+/g, '')}`]}
+                      onChange={(e) => setStudentFormData({...studentFormData, [`father${field.replace(/\s+/g, '')}`]: e.target.value})}
+                      placeholder={`Enter father's ${field.toLowerCase()}`}
                     />
                   </td>
-                  <td>
+                  <td className="w-5/12">
                     <Input
-                      type="number"
-                      value={exp.years}
-                      onChange={(e) => updateExperience(index, 'years', e.target.value)}
-                      placeholder="Years"
-                    />
-                  </td>
-                  <td>
-                    <Input
-                      value={exp.role}
-                      onChange={(e) => updateExperience(index, 'role', e.target.value)}
-                      placeholder="Role"
+                      id={`mother${field.replace(/\s+/g, '')}`}
+                      type={field === 'Birthdate' ? 'date' : 'text'}
+                      value={studentFormData[`mother${field.replace(/\s+/g, '')}`]}
+                      onChange={(e) => setStudentFormData({...studentFormData, [`mother${field.replace(/\s+/g, '')}`]: e.target.value})}
+                      placeholder={`Enter mother's ${field.toLowerCase()}`}
                     />
                   </td>
                 </tr>
               ))}
               </tbody>
             </table>
-            <Button onClick={addExperience}>Add Experience</Button>
+
+            <div className="mt-4">
+              <Label htmlFor="monthlyIncome">Monthly Income</Label>
+              <Input
+                id="monthlyIncome"
+                value={studentFormData.monthlyIncome}
+                onChange={(e) => setStudentFormData({...studentFormData, monthlyIncome: e.target.value})}
+                placeholder="Enter monthly income"
+              />
+            </div>
+
+            {studentFormData.livingWith === 'guardian' && (
+              <div className="mt-4 space-y-4">
+                <div>
+                  <Label htmlFor="guardianName">Guardian Name</Label>
+                  <Input
+                    id="guardianName"
+                    value={studentFormData.guardianName}
+                    onChange={(e) => setStudentFormData({...studentFormData, guardianName: e.target.value})}
+                    placeholder="Enter guardian's name"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="guardianRelationship">Guardian Relationship</Label>
+                  <Input
+                    id="guardianRelationship"
+                    value={studentFormData.guardianRelationship}
+                    onChange={(e) => setStudentFormData({...studentFormData, guardianRelationship: e.target.value})}
+                    placeholder="Enter guardian's relationship"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="guardianAddress">Guardian Address</Label>
+                  <Input
+                    id="guardianAddress"
+                    value={studentFormData.guardianAddress}
+                    onChange={(e) => setStudentFormData({...studentFormData, guardianAddress: e.target.value})}
+                    placeholder="Enter guardian's address"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="guardianContactNumber">Guardian Contact Number</Label>
+                  <Input
+                    id="guardianContactNumber"
+                    value={studentFormData.guardianContactNumber}
+                    onChange={(e) => setStudentFormData({...studentFormData, guardianContactNumber: e.target.value})}
+                    placeholder="Enter guardian's contact number"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="guardianEmail">Guardian Email</Label>
+                  <Input
+                    id="guardianEmail"
+                    value={studentFormData.guardianEmail}
+                    onChange={(e) => setStudentFormData({...studentFormData, guardianEmail: e.target.value})}
+                    placeholder="Enter guardian's email"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="mt-4">
+              <Label htmlFor="emergencyContact">Emergency Contact</Label>
+              <Input
+                id="emergencyContact"
+                value={studentFormData.emergencyContact}
+                onChange={(e) => setStudentFormData({...studentFormData, emergencyContact: e.target.value})}
+                placeholder="Enter emergency contact"
+              />
+            </div>
+            <div className="mt-4">
+              <Label htmlFor="emergencyContactNumber">Emergency Contact Number</Label>
+              <Input
+                id="emergencyContactNumber"
+                value={studentFormData.emergencyContactNumber}
+                onChange={(e) => setStudentFormData({...studentFormData, emergencyContactNumber: e.target.value})}
+                placeholder="Enter emergency contact number"
+              />
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold mb-4">Educational Background</h2>
+            <table className="w-full">
+              <thead>
+              <tr>
+                <th className="text-left">Level</th>
+                <th className="text-left">School Name</th>
+                <th className="text-left">Address</th>
+                <th className="text-left">Year Graduated</th>
+                <th className="text-left">Honor/s</th>
+              </tr>
+              </thead>
+              <tbody>
+              {studentFormData.educBackground.map((background, index) => (
+                <tr key={index}>
+                  <td>
+                    <Select
+                      value={background.level}
+                      onValueChange={(value) => {
+                        const newBackground = [...studentFormData.educBackground];
+                        newBackground[index].level = value;
+                        setStudentFormData({...studentFormData, educBackground: newBackground});
+                      }}
+                      disabled
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select level"/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Tertiary">Tertiary</SelectItem>
+                        <SelectItem value="Alternative Learning System">Alternative Learning System</SelectItem>
+                        <SelectItem value="Secondary">Secondary</SelectItem>
+                        <SelectItem value="Elementary">Elementary</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </td>
+                  <td>
+                    <Input
+                      value={background.schoolName}
+                      onChange={(e) => {
+                        const newBackground = [...studentFormData.educBackground];
+                        newBackground[index].schoolName = e.target.value;
+                        setStudentFormData({...studentFormData, educBackground: newBackground});
+                      }}
+                      placeholder="Enter school name"
+                    />
+                  </td>
+                  <td>
+                    <Input
+                      value={background.address}
+                      onChange={(e) => {
+                        const newBackground = [...studentFormData.educBackground];
+                        newBackground[index].address = e.target.value;
+                        setStudentFormData({...studentFormData, educBackground: newBackground});
+                      }}
+                      placeholder="Enter address"
+                    />
+                  </td>
+                  <td>
+                    <Input
+                      value={background.year}
+                      onChange={(e) => {
+                        const newBackground = [...studentFormData.educBackground];
+                        newBackground[index].year = e.target.value;
+                        setStudentFormData({...studentFormData, educBackground: newBackground});
+                      }}
+                      placeholder="Enter year graduated"
+                    />
+                  </td>
+                  <td>
+                    <Input
+                      value={background.honors}
+                      onChange={(e) => {
+                        const newBackground = [...studentFormData.educBackground];
+                        newBackground[index].honors = e.target.value;
+                        setStudentFormData({...studentFormData, educBackground: newBackground});
+                      }}
+                      placeholder="Enter honors"
+                    />
+                  </td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
+
+            <h2 className="text-xl font-semibold mb-4">Institutional Affiliations</h2>
+            <table className="w-full">
+              <thead>
+              <tr>
+                <th className="text-left">Organization</th>
+                <th className="text-left">Affiliation</th>
+                <th className="text-left">Year/s</th>
+                <th className="text-left">Active</th>
+              </tr>
+              </thead>
+              <tbody>
+              {studentFormData.institutionalAffiliations.map((affiliation, index) => (
+                <tr key={index}>
+                  <td>
+                    <Input
+                      value={affiliation.organization}
+                      onChange={(e) => {
+                        const newAffiliations = [...studentFormData.institutionalAffiliations];
+                        newAffiliations[index].organization = e.target.value;
+                        setStudentFormData({...studentFormData, institutionalAffiliations: newAffiliations});
+                      }}
+                      placeholder="Enter organization"
+                    />
+                  </td>
+                  <td>
+                    <Input
+                      value={affiliation.affiliation}
+                      onChange={(e) => {
+                        const newAffiliations = [...studentFormData.institutionalAffiliations];
+                        newAffiliations[index].affiliation = e.target.value;
+                        setStudentFormData({...studentFormData, institutionalAffiliations: newAffiliations});
+                      }}
+                      placeholder="Enter affiliation"
+                    />
+                  </td>
+                  <td>
+                    <Input
+                      value={affiliation.year}
+                      onChange={(e) => {
+                        const newAffiliations = [...studentFormData.institutionalAffiliations];
+                        newAffiliations[index].year = e.target.value;
+                        setStudentFormData({...studentFormData, institutionalAffiliations: newAffiliations});
+                      }}
+                      placeholder="Enter year/s"
+                    />
+                  </td>
+                  <td>
+                    <Checkbox
+                      checked={affiliation.status}
+                      onCheckedChange={(checked) => {
+                        const newAffiliations = [...studentFormData.institutionalAffiliations];
+                        newAffiliations[index].status = checked === true;
+                        setStudentFormData({...studentFormData, institutionalAffiliations: newAffiliations});
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
+
+            <h2 className="text-xl font-semibold mb-4">Work Experience</h2>
+            <table className="w-full">
+              <thead>
+              <tr>
+                <th className="text-left">Company</th>
+                <th className="text-left">Position</th>
+                <th className="text-left">Date Range</th>
+              </tr>
+              </thead>
+              <tbody>
+              {studentFormData.workExperience.map((experience, index) => (
+                <tr key={index}>
+                  <td>
+                    <Input
+                      value={experience.companyName}
+                      onChange={(e) => {
+                        const newExperience = [...studentFormData.workExperience];
+                        newExperience[index].companyName = e.target.value;
+                        setStudentFormData({...studentFormData, workExperience: newExperience});
+                      }}
+                      placeholder="Enter company name"
+                    />
+                  </td>
+                  <td>
+                    <Input
+                      value={experience.position}
+                      onChange={(e) => {
+                        const newExperience = [...studentFormData.workExperience];
+                        newExperience[index].position = e.target.value;
+                        setStudentFormData({...studentFormData, workExperience: newExperience});
+                      }}
+                      placeholder="Enter position"
+                    />
+                  </td>
+                  <td>
+                    <Input
+                      value={experience.dateRange}
+                      onChange={(e) => {
+                        const newExperience = [...studentFormData.workExperience];
+                        newExperience[index].dateRange = e.target.value;
+                        setStudentFormData({...studentFormData, workExperience: newExperience});
+                      }}
+                      placeholder="Enter date range"
+                    />
+                  </td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
           </div>
         )}
 
         {step === 4 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold mb-4">Additional Information</h2>
+
             <div>
-              <Label htmlFor="additionalInfo">Tell us more about yourself</Label>
+              <Label htmlFor="interest">Interests</Label>
+              <Creatable
+                isMulti
+                onChange={(selectedOptions) => setStudentFormData({
+                  ...studentFormData,
+                  interest: selectedOptions.map(option => option.value)
+                })}
+                onCreateOption={(value) => {
+                  setStudentFormData({
+                    ...studentFormData,
+                    interest: [...studentFormData.interest, value]
+                  })
+                }}
+                options={[
+                  {value: 'Sports', label: 'Sports'},
+                  {value: 'Music', label: 'Music'},
+                  {value: 'Art', label: 'Art'},
+                  // Add more options as needed
+                ]}
+                placeholder="Select interests"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="talents">Talents</Label>
+              <Creatable
+                isMulti
+                onChange={(selectedOptions) => setStudentFormData({
+                  ...studentFormData,
+                  talents: selectedOptions.map(option => option.value)
+                })}
+                onCreateOption={(value) => {
+                  setStudentFormData({
+                    ...studentFormData,
+                    talents: [...studentFormData.talents, value]
+                  })
+                }}
+                options={[
+                  {value: 'Singing', label: 'Singing'},
+                  {value: 'Dancing', label: 'Dancing'},
+                  {value: 'Drawing', label: 'Drawing'},
+                  // Add more options as needed
+                ]}
+                placeholder="Select talents"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="characteristics">Characteristics</Label>
+              <Creatable
+                isMulti
+                value={studentFormData.characteristics.map(value => ({value, label: value}))}
+                onChange={(selectedOptions) => setStudentFormData({
+                  ...studentFormData,
+                  characteristics: selectedOptions.map(option => option.value)
+                })}
+                onCreateOption={(value) => {
+                  setStudentFormData({
+                    ...studentFormData,
+                    characteristics: [...studentFormData.characteristics, value]
+                  })
+                }}
+                options={[
+                  { value: 'Hardworking', label: 'Hardworking' },
+                  { value: 'Creative', label: 'Creative' },
+                  { value: 'Team Player', label: 'Team Player' },
+                  // Add more options as needed
+                ]}
+                placeholder="Select characteristics"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="selfImageAnswer">How important am I?</Label>
               <Textarea
-                id="additionalInfo"
-                value={formData.additionalInfo}
-                onChange={(e) => updateFormData('additionalInfo', e.target.value)}
-                placeholder="Enter any additional information here"
-                className="h-40"
+                value={studentFormData.selfImageAnswer}
+                onChange={(e) => setStudentFormData({...studentFormData, selfImageAnswer: e.target.value})}
+                placeholder="Describe your self-image"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="selfMotivationAnswer">Am I eager to start and end with my work? If yes, why? If no, why</Label>
+              <Textarea
+                value={studentFormData.selfMotivationAnswer}
+                onChange={(e) => setStudentFormData({...studentFormData, selfMotivationAnswer: e.target.value})}
+                placeholder="Describe your self-motivation"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="decisionMakingAnswer">Do you usually make a decision alone or with a group? Why? When do you ask for help?</Label>
+              <Textarea
+                value={studentFormData.decisionMakingAnswer}
+                onChange={(e) => setStudentFormData({...studentFormData, decisionMakingAnswer: e.target.value})}
+                placeholder="Describe your decision-making process"
               />
             </div>
           </div>
@@ -589,43 +909,25 @@ export function MultiStepFormComponent() {
 
         {step === 5 && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Review and Submit</h2>
-            <div>
-              <Label htmlFor="country">Country</Label>
-              <Select
-                value={formData.country}
-                onValueChange={(value) => updateFormData('country', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your country"/>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="us">United States</SelectItem>
-                  <SelectItem value="uk">United Kingdom</SelectItem>
-                  <SelectItem value="ca">Canada</SelectItem>
-                  <SelectItem value="au">Australia</SelectItem>
-                </SelectContent>
-              </Select>
+            <h2 className="text-xl font-semibold">Cumulative Form</h2>
+            <div className="">
+              <h3 className="text-lg font-semibold ">Notes</h3>
+              <p>Make sure that you have accomplished this form without any errors as you won't be able to change this information later.</p>
+              <p>This form also serves as your guidance record and will be kept confidential.</p>
             </div>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="terms"
-                  checked={formData.termsAccepted}
-                  onCheckedChange={(checked) => updateFormData('termsAccepted', checked)}
+                  checked={isTermsChecked}
+                  onCheckedChange={(checked) => setIsTermsChecked(checked === true)}
                 />
-                <label htmlFor="terms">I accept the terms and conditions</label>
+                <label htmlFor="terms">I confirm that the information I have supplied is accurate and error-free</label>
               </div>
             </div>
-            <div className="bg-gray-100 p-4 rounded">
+            <div className=" rounded">
               <h3 className="font-semibold mb-2">Form Summary</h3>
-              <p>Name: {formData.name}</p>
-              <p>Age: {formData.age}</p>
-              <p>Email: {formData.email}</p>
-              <p>File: {formData.file ? formData.file.name : 'No file uploaded'}</p>
-              <p>Preferences: {formData.preferences.join(', ')}</p>
-              <p>Employment Status: {formData.employmentStatus}</p>
-              <p>Country: {formData.country}</p>
+              <AttachmentField fileSetter={setFile} />
             </div>
           </div>
         )}
