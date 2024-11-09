@@ -137,14 +137,19 @@ export function MultiStepFormComponent() {
     }
   });
 
+  const [file, setFile] = useState<{ file: string; path: string }[]>([]);
+  const [isTermsChecked, setIsTermsChecked] = useState(false)
+
   useEffect(() => {
     console.group('Student form data');
     console.log(studentFormData, new Date());
     console.groupEnd();
   }, [studentFormData]);
 
-  const [file, setFile] = useState<{ file: string; path: string }[]>([]);
-  const [isTermsChecked, setIsTermsChecked] = useState(false)
+  useEffect(() => {
+    setStudentFormData(prev => ({...prev, infoSheetPath: file[0]}))
+  }, [file]);
+
 
   const handleSubmit = async () => {
     console.log('Form submitted:', {...studentFormData, file})

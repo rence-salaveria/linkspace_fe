@@ -8,48 +8,28 @@ type Props = {
 }
 
 const AttachmentField = (props: Props) => {
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') ?? '');
-  const apiToken = currentUser.auth.api_token;
-
-  // get formik context
-  // const { setFieldValue } = useFormikContext<Student>();
-
-  const [files, setFiles] = useState<{
-    infoSheet: any[];
-  }>({
-    infoSheet: [],
-  });
-
-  const [filePaths, setFilePaths] = useState<{
-    file: string,
-    path: string
-  }[]>([] as {
-    file: string,
-    path: string
-  }[]);
+  const [files, setFiles] = useState<any[]>([]);
+  const [filePaths, setFilePaths] = useState<{ file: string, path: string }[]>([]);
 
   useEffect(() => {
-    console.log(filePaths)
-    // setFieldValue('consentForm', filePaths).then(() => {});
     props.fileSetter(filePaths);
+    console.log(filePaths);
   }, [filePaths]);
 
   return (
     <div className="fv-row mb-8">
       <label className="required form-label fs-5 py-2 text-muted-foreground">Upload the physical copy of the Cumulative Form should you have one</label>
       <FilePond
-        acceptedFileTypes={['application/png', 'image/png', 'application/pdf', 'image/jpeg', 'application/jpg']}
-        files={files.infoSheet}
+        maxFiles={1}
+        acceptedFileTypes={['image/png', 'image/jpeg', 'application/pdf']}
+        files={files}
         labelFileLoading={'Loading...'}
-        onupdatefiles={(files) => {
-          setFiles(prevState => ({...prevState, consentForm: files}))
-        }}
+        onupdatefiles={setFiles}
         labelIdle='Please Upload the Consent Form'
-        name={'consentForm'}
+        name={'infoSheet'}
         server={{
-          url: 'http://localhost:8000' + '/api',
+          url: 'http://localhost:8000/api',
           process: {
-            // TODO make this controller action
             url: '/upload/info-sheet',
             method: 'POST',
             withCredentials: false,
@@ -67,11 +47,7 @@ const AttachmentField = (props: Props) => {
           revert: (uniqueFileId, load, error) => {
             fetch('http://localhost:8000/api/upload/revert', {
               method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${apiToken}`,
-                'Content-Type': 'application/json'
-              },
-              body: uniqueFileId
+              body: JSON.stringify({ path: uniqueFileId })
             }).then(response => {
               if (response.ok) {
                 load();
