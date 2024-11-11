@@ -265,10 +265,31 @@ export function MultiStepFormComponent() {
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select your course"/>
-                  </SelectTrigger>
+                  </SelectTrigger>  
                   <SelectContent>
-                    <SelectItem value="course1">Course 1</SelectItem>
-                    <SelectItem value="course2">Course 2</SelectItem>
+                    <SelectItem value="BLIS">BLIS</SelectItem>
+                    <SelectItem value="BSCPE">BSCPE</SelectItem>
+                    <SelectItem value="BSP">BSP</SelectItem>
+                    <SelectItem value="BSIT">BSIT</SelectItem>
+                    <SelectItem value="BEED">BEED</SelectItem>
+                    <SelectItem value="BTLED">BTLED</SelectItem>
+                    <SelectItem value="BSED Filipino">BSED Filipino</SelectItem>
+                    <SelectItem value="BSED English">BSED English</SelectItem>
+                    <SelectItem value="BSED Values">BSED Values</SelectItem>
+                    <SelectItem value="BSED Social Studies">BSED Social Studies</SelectItem>
+                    <SelectItem value="BSED science">BSED science</SelectItem>
+                    <SelectItem value="BSED Math">BSED Math</SelectItem>
+                    <SelectItem value="BPED">BPED</SelectItem>
+                    <SelectItem value="BSCRIM">BSCRIM</SelectItem>
+                    <SelectItem value="BSAIS">BSAIS</SelectItem>
+                    <SelectItem value="BSENTREP">BSENTREP</SelectItem>
+                    <SelectItem value="BSBA MM">BSBA MM</SelectItem>
+                    <SelectItem value="BSBA HRM">BSBA HRM</SelectItem>
+                    <SelectItem value="BSOA">BSOA</SelectItem>
+                    <SelectItem value="BSTM">BSTM</SelectItem>
+                    <SelectItem value="BSHM">BSHM</SelectItem>
+                    <SelectItem value="CPE">CPE</SelectItem>
+                    <SelectItem value="BSBA FM">BSBA FM</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
