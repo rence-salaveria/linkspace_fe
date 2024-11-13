@@ -8,11 +8,11 @@ import {Textarea} from "@/components/ui/textarea"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import AttachmentField from "@/modules/students/AttachmentField.tsx";
 import {StudentFormFields} from "@/types/student.ts";
-import Creatable, { useCreatable } from 'react-select/creatable';
+import Creatable, {useCreatable} from 'react-select/creatable';
 
 export function MultiStepFormComponent() {
   const [step, setStep] = useState(1)
-  const [isSameAddress, setIsSameAddress] = useState(true)
+  const [isSameAddress, setIsSameAddress] = useState('n')
   const [othersResidency, setOthersResidency] = useState('')
   const [isLivingWithOthers, setIsLivingWithOthers] = useState(false)
   const [studentFormData, setStudentFormData] = useState<StudentFormFields>({
@@ -93,7 +93,7 @@ export function MultiStepFormComponent() {
     emergencyContactNumber: '',
 
     // make this part in the third step
-    educStatus: '', // checkbox group with the values Freshman, Transferee, Second Course, Regular/Irregular, Working Student
+    educStatus: [], // checkbox group with the values Freshman, Transferee, Second Course, Regular/Irregular, Working Student
 
     // make this a table with the following columns Level, School Name, Address, Year Graduated, Honor/s
     // the Level column has the following values: Tertiary, Alternative Learning System, Secondary, Elementary and the other columns are text fields (max 3)
@@ -142,7 +142,7 @@ export function MultiStepFormComponent() {
 
   useEffect(() => {
     console.group('Student form data');
-    console.log(studentFormData, new Date());
+    console.log(studentFormData.interest, new Date());
     console.groupEnd();
   }, [studentFormData]);
 
@@ -265,7 +265,7 @@ export function MultiStepFormComponent() {
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select your course"/>
-                  </SelectTrigger>  
+                  </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="BLIS">BLIS</SelectItem>
                     <SelectItem value="BSCPE">BSCPE</SelectItem>
@@ -306,7 +306,7 @@ export function MultiStepFormComponent() {
             </div>
 
             <div className="flex space-x-4">
-              <div className="w-1/2">
+              <div className="w-5/12">
                 <Label htmlFor="mailingAddress">Mailing Address</Label>
                 <Input
                   id="mailingAddress"
@@ -315,7 +315,7 @@ export function MultiStepFormComponent() {
                   placeholder="Enter your mailing address"
                 />
               </div>
-              <div className="w-1/2">
+              <div className="w-5/12">
                 <Label htmlFor="mailingContactNumber">Mailing Contact Number</Label>
                 <Input
                   id="mailingContactNumber"
@@ -324,9 +324,27 @@ export function MultiStepFormComponent() {
                   placeholder="Enter your mailing contact number"
                 />
               </div>
+              <div className="w-3/12">
+                <Label htmlFor="gender">Different Permanent Address?</Label>
+                <RadioGroup
+                  value={isSameAddress || 'n'}
+                  onValueChange={(value) => setIsSameAddress(value)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="n" id="n"/>
+                      <Label htmlFor="n">No</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="y" id="y"/>
+                      <Label htmlFor="y">Yes</Label>
+                    </div>
+                  </div>
+                </RadioGroup>
+              </div>
             </div>
 
-            {!isSameAddress && (
+            {isSameAddress === 'y' && (
               <div className="flex space-x-4">
                 <div className="w-1/2">
                   <Label htmlFor="permanentAddress">Permanent Address</Label>
@@ -508,7 +526,10 @@ export function MultiStepFormComponent() {
                   <Checkbox
                     id="fatherLiving"
                     checked={studentFormData.fatherLiving === 1}
-                    onCheckedChange={(checked) => setStudentFormData({...studentFormData, fatherLiving: checked ? 1 : 0})}
+                    onCheckedChange={(checked) => setStudentFormData({
+                      ...studentFormData,
+                      fatherLiving: checked ? 1 : 0
+                    })}
                   />
                   <Label htmlFor="fatherLiving">Living</Label>
                 </td>
@@ -516,7 +537,10 @@ export function MultiStepFormComponent() {
                   <Checkbox
                     id="motherLiving"
                     checked={studentFormData.motherLiving === 1}
-                    onCheckedChange={(checked) => setStudentFormData({...studentFormData, motherLiving: checked ? 1 : 0})}
+                    onCheckedChange={(checked) => setStudentFormData({
+                      ...studentFormData,
+                      motherLiving: checked ? 1 : 0
+                    })}
                   />
                   <Label htmlFor="motherLiving">Living</Label>
                 </td>
@@ -529,7 +553,10 @@ export function MultiStepFormComponent() {
                       id={`father${field.replace(/\s+/g, '')}`}
                       type={field === 'Birthdate' ? 'date' : 'text'}
                       value={studentFormData[`father${field.replace(/\s+/g, '')}`]}
-                      onChange={(e) => setStudentFormData({...studentFormData, [`father${field.replace(/\s+/g, '')}`]: e.target.value})}
+                      onChange={(e) => setStudentFormData({
+                        ...studentFormData,
+                        [`father${field.replace(/\s+/g, '')}`]: e.target.value
+                      })}
                       placeholder={`Enter father's ${field.toLowerCase()}`}
                     />
                   </td>
@@ -538,7 +565,10 @@ export function MultiStepFormComponent() {
                       id={`mother${field.replace(/\s+/g, '')}`}
                       type={field === 'Birthdate' ? 'date' : 'text'}
                       value={studentFormData[`mother${field.replace(/\s+/g, '')}`]}
-                      onChange={(e) => setStudentFormData({...studentFormData, [`mother${field.replace(/\s+/g, '')}`]: e.target.value})}
+                      onChange={(e) => setStudentFormData({
+                        ...studentFormData,
+                        [`mother${field.replace(/\s+/g, '')}`]: e.target.value
+                      })}
                       placeholder={`Enter mother's ${field.toLowerCase()}`}
                     />
                   </td>
@@ -630,7 +660,61 @@ export function MultiStepFormComponent() {
 
         {step === 3 && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Educational Background</h2>
+            <div>
+              <h2 className="text-xl font-semibold mb-4">Educational Background</h2>
+
+              <Label>Please Check if you are:</Label>
+              <div className="flex flex-row space-x-4">
+                {["Freshman", "Transferee", "Second Course", "Regular / Irregular", "Working Student"].map((status) => (
+                  <div key={status} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={status}
+                      checked={studentFormData.educStatus.includes(status)}
+                      onCheckedChange={(checked) => {
+                        setStudentFormData((prev) => ({
+                          ...prev,
+                          educStatus: checked
+                            ? [...prev.educStatus, status]
+                            : prev.educStatus.filter((s) => s !== status),
+                        }));
+                      }}
+                    />
+                    <Label htmlFor={status}>{status}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <Label>Are you enjoying education/financial assistance?</Label>
+              <RadioGroup
+                value={studentFormData.educAssistance.toString()}
+                onValueChange={(value) => setStudentFormData({...studentFormData, educAssistance: parseInt(value)})}
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="1" id="yes"/>
+                    <Label htmlFor="yes">Yes</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="0" id="no"/>
+                    <Label htmlFor="no">No</Label>
+                  </div>
+                </div>
+              </RadioGroup>
+              {studentFormData.educAssistance === 1 && (
+                <div className="mt-2">
+                  <Label htmlFor="educAssistanceInfo">If yes, please specify</Label>
+                  <Input
+                    id="educAssistanceInfo"
+                    value={studentFormData.educAssistanceInfo}
+                    onChange={(e) => setStudentFormData({...studentFormData, educAssistanceInfo: e.target.value})}
+                    placeholder="Specify your education/financial assistance"
+                  />
+                </div>
+              )}
+            </div>
+
             <table className="w-full">
               <thead>
               <tr>
@@ -835,6 +919,7 @@ export function MultiStepFormComponent() {
               <Label htmlFor="interest">Interests</Label>
               <Creatable
                 isMulti
+                value={studentFormData.interest.map(value => ({value, label: value}))}
                 onChange={(selectedOptions) => setStudentFormData({
                   ...studentFormData,
                   interest: selectedOptions.map(option => option.value)
@@ -851,124 +936,132 @@ export function MultiStepFormComponent() {
                   {value: 'Art', label: 'Art'},
                   // Add more options as needed
                 ]}
+
                 placeholder="Select interests"
               />
             </div>
 
             <div>
-              <Label htmlFor="talents">Talents</Label>
-              <Creatable
-                isMulti
-                onChange={(selectedOptions) => setStudentFormData({
-                  ...studentFormData,
-                  talents: selectedOptions.map(option => option.value)
-                })}
-                onCreateOption={(value) => {
-                  setStudentFormData({
-                    ...studentFormData,
-                    talents: [...studentFormData.talents, value]
-                  })
-                }}
-                options={[
-                  {value: 'Singing', label: 'Singing'},
-                  {value: 'Dancing', label: 'Dancing'},
-                  {value: 'Drawing', label: 'Drawing'},
-                  // Add more options as needed
-                ]}
-                placeholder="Select talents"
-              />
-            </div>
+                  <Label htmlFor="talents">Talents</Label>
+                  <Creatable
+                    isMulti
+                    value={studentFormData.talents.map(value => ({value, label: value}))}
+                    onChange={(selectedOptions) => setStudentFormData({
+                      ...studentFormData,
+                      talents: selectedOptions.map(option => option.value)
+                    })}
+                    onCreateOption={(value) => {
+                      setStudentFormData({
+                        ...studentFormData,
+                        talents: [...studentFormData.talents, value]
+                      })
+                    }}
+                    options={[
+                      {value: 'Singing', label: 'Singing'},
+                      {value: 'Dancing', label: 'Dancing'},
+                      {value: 'Drawing', label: 'Drawing'},
+                      // Add more options as needed
+                    ]}
+                    placeholder="Select talents"
+                  />
+                </div>
 
-            <div>
-              <Label htmlFor="characteristics">Characteristics</Label>
-              <Creatable
-                isMulti
-                value={studentFormData.characteristics.map(value => ({value, label: value}))}
-                onChange={(selectedOptions) => setStudentFormData({
-                  ...studentFormData,
-                  characteristics: selectedOptions.map(option => option.value)
-                })}
-                onCreateOption={(value) => {
-                  setStudentFormData({
-                    ...studentFormData,
-                    characteristics: [...studentFormData.characteristics, value]
-                  })
-                }}
-                options={[
-                  { value: 'Hardworking', label: 'Hardworking' },
-                  { value: 'Creative', label: 'Creative' },
-                  { value: 'Team Player', label: 'Team Player' },
-                  // Add more options as needed
-                ]}
-                placeholder="Select characteristics"
-              />
-            </div>
+                <div>
+                  <Label htmlFor="characteristics">Characteristics</Label>
+                  <Creatable
+                    isMulti
+                    value={studentFormData.characteristics.map(value => ({value, label: value}))}
+                    onChange={(selectedOptions) => setStudentFormData({
+                      ...studentFormData,
+                      characteristics: selectedOptions.map(option => option.value)
+                    })}
+                    onCreateOption={(value) => {
+                      setStudentFormData({
+                        ...studentFormData,
+                        characteristics: [...studentFormData.characteristics, value]
+                      })
+                    }}
+                    options={[
+                      {value: 'Hardworking', label: 'Hardworking'},
+                      {value: 'Creative', label: 'Creative'},
+                      {value: 'Team Player', label: 'Team Player'},
+                      // Add more options as needed
+                    ]}
+                    placeholder="Select characteristics"
+                  />
+                </div>
 
-            <div>
-              <Label htmlFor="selfImageAnswer">How important am I?</Label>
-              <Textarea
-                value={studentFormData.selfImageAnswer}
-                onChange={(e) => setStudentFormData({...studentFormData, selfImageAnswer: e.target.value})}
-                placeholder="Describe your self-image"
-              />
-            </div>
+                <div>
+                  <Label htmlFor="selfImageAnswer">How important am I?</Label>
+                  <Textarea
+                    value={studentFormData.selfImageAnswer}
+                    onChange={(e) => setStudentFormData({...studentFormData, selfImageAnswer: e.target.value})}
+                    placeholder="Describe your self-image"
+                  />
+                </div>
 
-            <div>
-              <Label htmlFor="selfMotivationAnswer">Am I eager to start and end with my work? If yes, why? If no, why</Label>
-              <Textarea
-                value={studentFormData.selfMotivationAnswer}
-                onChange={(e) => setStudentFormData({...studentFormData, selfMotivationAnswer: e.target.value})}
-                placeholder="Describe your self-motivation"
-              />
-            </div>
+                <div>
+                  <Label htmlFor="selfMotivationAnswer">Am I eager to start and end with my work? If yes, why? If no,
+                    why</Label>
+                  <Textarea
+                    value={studentFormData.selfMotivationAnswer}
+                    onChange={(e) => setStudentFormData({...studentFormData, selfMotivationAnswer: e.target.value})}
+                    placeholder="Describe your self-motivation"
+                  />
+                </div>
 
-            <div>
-              <Label htmlFor="decisionMakingAnswer">Do you usually make a decision alone or with a group? Why? When do you ask for help?</Label>
-              <Textarea
-                value={studentFormData.decisionMakingAnswer}
-                onChange={(e) => setStudentFormData({...studentFormData, decisionMakingAnswer: e.target.value})}
-                placeholder="Describe your decision-making process"
-              />
-            </div>
-          </div>
-        )}
-
-        {step === 5 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Cumulative Form</h2>
-            <div className="">
-              <h3 className="text-lg font-semibold ">Notes</h3>
-              <p>Make sure that you have accomplished this form without any errors as you won't be able to change this information later.</p>
-              <p>This form also serves as your guidance record and will be kept confidential.</p>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="terms"
-                  checked={isTermsChecked}
-                  onCheckedChange={(checked) => setIsTermsChecked(checked === true)}
-                />
-                <label htmlFor="terms">I confirm that the information I have supplied is accurate and error-free</label>
+                <div>
+                  <Label htmlFor="decisionMakingAnswer">Do you usually make a decision alone or with a group? Why? When
+                    do
+                    you ask for help?</Label>
+                  <Textarea
+                    value={studentFormData.decisionMakingAnswer}
+                    onChange={(e) => setStudentFormData({...studentFormData, decisionMakingAnswer: e.target.value})}
+                    placeholder="Describe your decision-making process"
+                  />
+                </div>
               </div>
-            </div>
-            <div className=" rounded">
-              <h3 className="font-semibold mb-2">Form Summary</h3>
-              <AttachmentField fileSetter={setFile} />
+            )}
+
+            {step === 5 && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">Cumulative Form</h2>
+                <div className="">
+                  <h3 className="text-lg font-semibold ">Notes</h3>
+                  <p>Make sure that you have accomplished this form without any errors as you won't be able to change
+                    this
+                    information later.</p>
+                  <p>This form also serves as your guidance record and will be kept confidential.</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="terms"
+                      checked={isTermsChecked}
+                      onCheckedChange={(checked) => setIsTermsChecked(checked === true)}
+                    />
+                    <label htmlFor="terms">I confirm that the information I have supplied is accurate and
+                      error-free</label>
+                  </div>
+                </div>
+                <div className=" rounded">
+                  <h3 className="font-semibold mb-2">Form Summary</h3>
+                  <AttachmentField fileSetter={setFile}/>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-6 flex justify-between">
+              {step > 1 && (
+                <Button onClick={prevStep}>Previous</Button>
+              )}
+              {step < 5 ? (
+                <Button onClick={nextStep}>Next</Button>
+              ) : (
+                <Button onClick={handleSubmit}>Submit</Button>
+              )}
             </div>
           </div>
-        )}
-
-        <div className="mt-6 flex justify-between">
-          {step > 1 && (
-            <Button onClick={prevStep}>Previous</Button>
-          )}
-          {step < 5 ? (
-            <Button onClick={nextStep}>Next</Button>
-          ) : (
-            <Button onClick={handleSubmit}>Submit</Button>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
+          </div>
+          )
+        }

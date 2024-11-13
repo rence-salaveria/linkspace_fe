@@ -138,7 +138,7 @@ export interface StudentFormFields {
   guardianEmail?: string;
   emergencyContact?: string;
   emergencyContactNumber?: string;
-  educStatus: string;
+  educStatus: string[];
   educBackground?: EducBackground[];
   educAssistance: number;
   educAssistanceInfo?: string;
