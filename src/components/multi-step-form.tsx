@@ -9,6 +9,8 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import AttachmentField from "@/modules/students/AttachmentField.tsx";
 import {StudentFormFields} from "@/types/student.ts";
 import Creatable, {useCreatable} from 'react-select/creatable';
+import axios from "@/lib/axios.ts";
+import toast from "react-hot-toast";
 
 export function MultiStepFormComponent() {
   const [step, setStep] = useState(1)
@@ -153,6 +155,12 @@ export function MultiStepFormComponent() {
 
   const handleSubmit = async () => {
     console.log('Form submitted:', {...studentFormData, file})
+
+    const response = await toast.promise(axios.post("/student/add", studentFormData), {
+      success: "Added student successfully",
+      error: (e) => `Failed to add student: ${e.message}`,
+      loading: "Adding student..."
+    })
   }
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 5))
