@@ -45,7 +45,7 @@ export function Dashboard() {
           <h1 className="mb-6 mt-6 text-3xl font-bold text-white">Welcome, {user.fullName}!</h1>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <Card
-              onClick={() => navigate('/table/students')}
+              onClick={() => navigate('/table/student')}
               className="transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -61,7 +61,7 @@ export function Dashboard() {
             </Card>
 
             <Card
-              onClick={() => navigate('/table/consultations')}
+              onClick={() => navigate('/table/consultation')}
               className="transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -79,7 +79,7 @@ export function Dashboard() {
             </Card>
 
             <Card
-              onClick={() => navigate('/table/today-consultations')}
+              onClick={() => navigate('/table/today-consultation')}
               className="transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
