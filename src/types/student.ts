@@ -20,7 +20,7 @@ export interface Student {
   spouseName?: string;
   spouseOccupation?: string;
   birthOrder: number;
-  brotherCount: string;
+  brotherCount: number;
   sisterCount: number;
   totalSiblings: number;
   livingWith: "parent" | "guardian" | "others" | string;
@@ -50,7 +50,7 @@ export interface Student {
   guardianEmail?: string;
   emergencyContact?: string;
   emergencyContactNumber?: string;
-  educStatus: string;
+  educStatus: string[];
   educBackground?: EducBackground[];
   educAssistance: number;
   educAssistanceInfo?: string;
@@ -62,10 +62,7 @@ export interface Student {
   selfImageAnswer: string;
   selfMotivationAnswer: string;
   decisionMakingAnswer: string;
-  infoSheetPath: {
-    file: string,
-    path: string
-  };
+  infoSheet: string
 }
 
 export interface EducBackground {

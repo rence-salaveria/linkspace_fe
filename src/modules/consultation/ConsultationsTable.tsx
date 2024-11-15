@@ -103,7 +103,7 @@ const ConsultationsTable = () => {
       <div className="container py-6">
         <Navbar/>
         <main className="flex-1 w-full flex justify-center">
-          {isFetching ? <div>Loading...</div> : (
+          {isFetching ? <div className="text-white">Loading...</div> : (
             // @ts-ignore
             <ReusableTableComponent data={data ? data : []} columns={columns} tableTitle="Consultations"/>
           )}

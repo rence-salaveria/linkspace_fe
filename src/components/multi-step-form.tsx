@@ -553,35 +553,222 @@ export function MultiStepFormComponent() {
                   <Label htmlFor="motherLiving">Living</Label>
                 </td>
               </tr>
-              {['Name', 'Nationality', 'Religion', 'Educational Attainment', 'Occupation', 'Company', 'Birthdate', 'Contact Number'].map((field, index) => (
-                <tr key={index}>
-                  <td className="w-2/12">{field}</td>
-                  <td className="w-5/12">
-                    <Input
-                      id={`father${field.replace(/\s+/g, '')}`}
-                      type={field === 'Birthdate' ? 'date' : 'text'}
-                      value={studentFormData[`father${field.replace(/\s+/g, '')}`]}
-                      onChange={(e) => setStudentFormData({
-                        ...studentFormData,
-                        [`father${field.replace(/\s+/g, '')}`]: e.target.value
-                      })}
-                      placeholder={`Enter father's ${field.toLowerCase()}`}
-                    />
-                  </td>
-                  <td className="w-5/12">
-                    <Input
-                      id={`mother${field.replace(/\s+/g, '')}`}
-                      type={field === 'Birthdate' ? 'date' : 'text'}
-                      value={studentFormData[`mother${field.replace(/\s+/g, '')}`]}
-                      onChange={(e) => setStudentFormData({
-                        ...studentFormData,
-                        [`mother${field.replace(/\s+/g, '')}`]: e.target.value
-                      })}
-                      placeholder={`Enter mother's ${field.toLowerCase()}`}
-                    />
-                  </td>
-                </tr>
-              ))}
+              <tr>
+                <td className="w-2/12">Name</td>
+                <td className="w-5/12">
+                  <Input
+                    id="fatherName"
+                    type="text"
+                    value={studentFormData.fatherName}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      fatherName: e.target.value
+                    })}
+                    placeholder="Enter father's name"
+                  />
+                </td>
+                <td className="w-5/12">
+                  <Input
+                    id="motherName"
+                    type="text"
+                    value={studentFormData.motherName}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      motherName: e.target.value
+                    })}
+                    placeholder="Enter mother's name"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="w-2/12">Nationality</td>
+                <td className="w-5/12">
+                  <Input
+                    id="fatherNationality"
+                    type="text"
+                    value={studentFormData.fatherNationality}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      fatherNationality: e.target.value
+                    })}
+                    placeholder="Enter father's nationality"
+                  />
+                </td>
+                <td className="w-5/12">
+                  <Input
+                    id="motherNationality"
+                    type="text"
+                    value={studentFormData.motherNationality}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      motherNationality: e.target.value
+                    })}
+                    placeholder="Enter mother's nationality"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="w-2/12">Religion</td>
+                <td className="w-5/12">
+                  <Input
+                    id="fatherReligion"
+                    type="text"
+                    value={studentFormData.fatherReligion}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      fatherReligion: e.target.value
+                    })}
+                    placeholder="Enter father's religion"
+                  />
+                </td>
+                <td className="w-5/12">
+                  <Input
+                    id="motherReligion"
+                    type="text"
+                    value={studentFormData.motherReligion}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      motherReligion: e.target.value
+                    })}
+                    placeholder="Enter mother's religion"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="w-2/12">Educational Attainment</td>
+                <td className="w-5/12">
+                  <Input
+                    id="fatherEducAttainment"
+                    type="text"
+                    value={studentFormData.fatherEducAttainment}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      fatherEducAttainment: e.target.value
+                    })}
+                    placeholder="Enter father's educational attainment"
+                  />
+                </td>
+                <td className="w-5/12">
+                  <Input
+                    id="motherEducAttainment"
+                    type="text"
+                    value={studentFormData.motherEducAttainment}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      motherEducAttainment: e.target.value
+                    })}
+                    placeholder="Enter mother's educational attainment"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="w-2/12">Occupation</td>
+                <td className="w-5/12">
+                  <Input
+                    id="fatherOccupation"
+                    type="text"
+                    value={studentFormData.fatherOccupation}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      fatherOccupation: e.target.value
+                    })}
+                    placeholder="Enter father's occupation"
+                  />
+                </td>
+                <td className="w-5/12">
+                  <Input
+                    id="motherOccupation"
+                    type="text"
+                    value={studentFormData.motherOccupation}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      motherOccupation: e.target.value
+                    })}
+                    placeholder="Enter mother's occupation"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="w-2/12">Company</td>
+                <td className="w-5/12">
+                  <Input
+                    id="fatherCompany"
+                    type="text"
+                    value={studentFormData.fatherCompany}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      fatherCompany: e.target.value
+                    })}
+                    placeholder="Enter father's company"
+                  />
+                </td>
+                <td className="w-5/12">
+                  <Input
+                    id="motherCompany"
+                    type="text"
+                    value={studentFormData.motherCompany}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      motherCompany: e.target.value
+                    })}
+                    placeholder="Enter mother's company"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="w-2/12">Birthdate</td>
+                <td className="w-5/12">
+                  <Input
+                    id="fatherBirthdate"
+                    type="date"
+                    value={studentFormData.fatherBirthdate}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      fatherBirthdate: e.target.value
+                    })}
+                    placeholder="Enter father's birthdate"
+                  />
+                </td>
+                <td className="w-5/12">
+                  <Input
+                    id="motherBirthdate"
+                    type="date"
+                    value={studentFormData.motherBirthdate}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      motherBirthdate: e.target.value
+                    })}
+                    placeholder="Enter mother's birthdate"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="w-2/12">Contact Number</td>
+                <td className="w-5/12">
+                  <Input
+                    id="fatherContactNumber"
+                    type="text"
+                    value={studentFormData.fatherContactNumber}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      fatherContactNumber: e.target.value
+                    })}
+                    placeholder="Enter father's contact number"
+                  />
+                </td>
+                <td className="w-5/12">
+                  <Input
+                    id="motherContactNumber"
+                    type="text"
+                    value={studentFormData.motherContactNumber}
+                    onChange={(e) => setStudentFormData({
+                      ...studentFormData,
+                      motherContactNumber: e.target.value
+                    })}
+                    placeholder="Enter mother's contact number"
+                  />
+                </td>
+              </tr>
               </tbody>
             </table>
 
@@ -950,126 +1137,126 @@ export function MultiStepFormComponent() {
             </div>
 
             <div>
-                  <Label htmlFor="talents">Talents</Label>
-                  <Creatable
-                    isMulti
-                    value={studentFormData.talents.map(value => ({value, label: value}))}
-                    onChange={(selectedOptions) => setStudentFormData({
-                      ...studentFormData,
-                      talents: selectedOptions.map(option => option.value)
-                    })}
-                    onCreateOption={(value) => {
-                      setStudentFormData({
-                        ...studentFormData,
-                        talents: [...studentFormData.talents, value]
-                      })
-                    }}
-                    options={[
-                      {value: 'Singing', label: 'Singing'},
-                      {value: 'Dancing', label: 'Dancing'},
-                      {value: 'Drawing', label: 'Drawing'},
-                      // Add more options as needed
-                    ]}
-                    placeholder="Select talents"
-                  />
-                </div>
+              <Label htmlFor="talents">Talents</Label>
+              <Creatable
+                isMulti
+                value={studentFormData.talents.map(value => ({value, label: value}))}
+                onChange={(selectedOptions) => setStudentFormData({
+                  ...studentFormData,
+                  talents: selectedOptions.map(option => option.value)
+                })}
+                onCreateOption={(value) => {
+                  setStudentFormData({
+                    ...studentFormData,
+                    talents: [...studentFormData.talents, value]
+                  })
+                }}
+                options={[
+                  {value: 'Singing', label: 'Singing'},
+                  {value: 'Dancing', label: 'Dancing'},
+                  {value: 'Drawing', label: 'Drawing'},
+                  // Add more options as needed
+                ]}
+                placeholder="Select talents"
+              />
+            </div>
 
-                <div>
-                  <Label htmlFor="characteristics">Characteristics</Label>
-                  <Creatable
-                    isMulti
-                    value={studentFormData.characteristics.map(value => ({value, label: value}))}
-                    onChange={(selectedOptions) => setStudentFormData({
-                      ...studentFormData,
-                      characteristics: selectedOptions.map(option => option.value)
-                    })}
-                    onCreateOption={(value) => {
-                      setStudentFormData({
-                        ...studentFormData,
-                        characteristics: [...studentFormData.characteristics, value]
-                      })
-                    }}
-                    options={[
-                      {value: 'Hardworking', label: 'Hardworking'},
-                      {value: 'Creative', label: 'Creative'},
-                      {value: 'Team Player', label: 'Team Player'},
-                      // Add more options as needed
-                    ]}
-                    placeholder="Select characteristics"
-                  />
-                </div>
+            <div>
+              <Label htmlFor="characteristics">Characteristics</Label>
+              <Creatable
+                isMulti
+                value={studentFormData.characteristics.map(value => ({value, label: value}))}
+                onChange={(selectedOptions) => setStudentFormData({
+                  ...studentFormData,
+                  characteristics: selectedOptions.map(option => option.value)
+                })}
+                onCreateOption={(value) => {
+                  setStudentFormData({
+                    ...studentFormData,
+                    characteristics: [...studentFormData.characteristics, value]
+                  })
+                }}
+                options={[
+                  {value: 'Hardworking', label: 'Hardworking'},
+                  {value: 'Creative', label: 'Creative'},
+                  {value: 'Team Player', label: 'Team Player'},
+                  // Add more options as needed
+                ]}
+                placeholder="Select characteristics"
+              />
+            </div>
 
-                <div>
-                  <Label htmlFor="selfImageAnswer">How important am I?</Label>
-                  <Textarea
-                    value={studentFormData.selfImageAnswer}
-                    onChange={(e) => setStudentFormData({...studentFormData, selfImageAnswer: e.target.value})}
-                    placeholder="Describe your self-image"
-                  />
-                </div>
+            <div>
+              <Label htmlFor="selfImageAnswer">How important am I?</Label>
+              <Textarea
+                value={studentFormData.selfImageAnswer}
+                onChange={(e) => setStudentFormData({...studentFormData, selfImageAnswer: e.target.value})}
+                placeholder="Describe your self-image"
+              />
+            </div>
 
-                <div>
-                  <Label htmlFor="selfMotivationAnswer">Am I eager to start and end with my work? If yes, why? If no,
-                    why</Label>
-                  <Textarea
-                    value={studentFormData.selfMotivationAnswer}
-                    onChange={(e) => setStudentFormData({...studentFormData, selfMotivationAnswer: e.target.value})}
-                    placeholder="Describe your self-motivation"
-                  />
-                </div>
+            <div>
+              <Label htmlFor="selfMotivationAnswer">Am I eager to start and end with my work? If yes, why? If no,
+                why</Label>
+              <Textarea
+                value={studentFormData.selfMotivationAnswer}
+                onChange={(e) => setStudentFormData({...studentFormData, selfMotivationAnswer: e.target.value})}
+                placeholder="Describe your self-motivation"
+              />
+            </div>
 
-                <div>
-                  <Label htmlFor="decisionMakingAnswer">Do you usually make a decision alone or with a group? Why? When
-                    do
-                    you ask for help?</Label>
-                  <Textarea
-                    value={studentFormData.decisionMakingAnswer}
-                    onChange={(e) => setStudentFormData({...studentFormData, decisionMakingAnswer: e.target.value})}
-                    placeholder="Describe your decision-making process"
-                  />
-                </div>
-              </div>
-            )}
-
-            {step === 5 && (
-              <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Cumulative Form</h2>
-                <div className="">
-                  <h3 className="text-lg font-semibold ">Notes</h3>
-                  <p>Make sure that you have accomplished this form without any errors as you won't be able to change
-                    this
-                    information later.</p>
-                  <p>This form also serves as your guidance record and will be kept confidential.</p>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="terms"
-                      checked={isTermsChecked}
-                      onCheckedChange={(checked) => setIsTermsChecked(checked === true)}
-                    />
-                    <label htmlFor="terms">I confirm that the information I have supplied is accurate and
-                      error-free</label>
-                  </div>
-                </div>
-                <div className=" rounded">
-                  <h3 className="font-semibold mb-2">Form Summary</h3>
-                  <AttachmentField fileSetter={setFile}/>
-                </div>
-              </div>
-            )}
-
-            <div className="mt-6 flex justify-between">
-              {step > 1 && (
-                <Button onClick={prevStep}>Previous</Button>
-              )}
-              {step < 5 ? (
-                <Button onClick={nextStep}>Next</Button>
-              ) : (
-                <Button onClick={handleSubmit}>Submit</Button>
-              )}
+            <div>
+              <Label htmlFor="decisionMakingAnswer">Do you usually make a decision alone or with a group? Why? When
+                do
+                you ask for help?</Label>
+              <Textarea
+                value={studentFormData.decisionMakingAnswer}
+                onChange={(e) => setStudentFormData({...studentFormData, decisionMakingAnswer: e.target.value})}
+                placeholder="Describe your decision-making process"
+              />
             </div>
           </div>
+        )}
+
+        {step === 5 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Cumulative Form</h2>
+            <div className="">
+              <h3 className="text-lg font-semibold ">Notes</h3>
+              <p>Make sure that you have accomplished this form without any errors as you won't be able to change
+                this
+                information later.</p>
+              <p>This form also serves as your guidance record and will be kept confidential.</p>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terms"
+                  checked={isTermsChecked}
+                  onCheckedChange={(checked) => setIsTermsChecked(checked === true)}
+                />
+                <label htmlFor="terms">I confirm that the information I have supplied is accurate and
+                  error-free</label>
+              </div>
+            </div>
+            <div className=" rounded">
+              <h3 className="font-semibold mb-2">Form Summary</h3>
+              <AttachmentField fileSetter={setFile}/>
+            </div>
           </div>
-          )
-        }
+        )}
+
+        <div className="mt-6 flex justify-between">
+          {step > 1 && (
+            <Button onClick={prevStep}>Previous</Button>
+          )}
+          {step < 5 ? (
+            <Button onClick={nextStep}>Next</Button>
+          ) : (
+            <Button onClick={handleSubmit}>Submit</Button>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
