@@ -32,6 +32,7 @@ export function MultiStepFormComponent() {
     // grouped in next row
     course: '', // dropdown 1/2 of width
     year: '', // number field 1/2 of width
+    idNumber: '',
 
     // grouped in next row
     mailingAddress: '',
@@ -136,26 +137,34 @@ export function MultiStepFormComponent() {
     infoSheetPath: {
       file: '',
       path: ''
+    },
+    photo: {
+      file: '',
+      path: ''
     }
   });
 
   const [file, setFile] = useState<{ file: string; path: string }[]>([]);
+  const [photo, setPhoto] = useState<{ file: string; path: string }[]>([]);
   const [isTermsChecked, setIsTermsChecked] = useState(false)
 
   useEffect(() => {
+    console.log(isTermsChecked)
+  }, [isTermsChecked]);
+
+  useEffect(() => {
     console.group('Student form data');
-    console.log(studentFormData.interest, new Date());
+    console.log(studentFormData, new Date());
     console.groupEnd();
   }, [studentFormData]);
 
   useEffect(() => {
     setStudentFormData(prev => ({...prev, infoSheetPath: file[0]}))
-  }, [file]);
+    setStudentFormData(prev => ({...prev, photo: photo[0]}))
+  }, [file, photo]);
 
 
   const handleSubmit = async () => {
-    console.log('Form submitted:', {...studentFormData, file})
-
     const response = await toast.promise(axios.post("/student/add", studentFormData), {
       success: "Added student successfully",
       error: (e) => `Failed to add student: ${e.message}`,
@@ -265,7 +274,7 @@ export function MultiStepFormComponent() {
             </div>
 
             <div className="flex space-x-4">
-              <div className="w-1/2">
+              <div className="w-1/3">
                 <Label htmlFor="course">Course</Label>
                 <Select
                   value={studentFormData.course}
@@ -301,7 +310,7 @@ export function MultiStepFormComponent() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="w-1/2">
+              <div className="w-1/3">
                 <Label htmlFor="year">Year</Label>
                 <Input
                   id="year"
@@ -309,6 +318,16 @@ export function MultiStepFormComponent() {
                   value={studentFormData.year}
                   onChange={(e) => setStudentFormData({...studentFormData, year: e.target.value})}
                   placeholder="Enter your year"
+                />
+              </div>
+              <div className="w-1/3">
+                <Label htmlFor="idNumber">ID Number</Label>
+                <Input
+                  id="idNumber"
+                  type="text"
+                  value={studentFormData.idNumber}
+                  onChange={(e) => setStudentFormData({...studentFormData, idNumber: e.target.value})}
+                  placeholder="Enter your ID Number"
                 />
               </div>
             </div>
@@ -1227,21 +1246,15 @@ export function MultiStepFormComponent() {
                 this
                 information later.</p>
               <p>This form also serves as your guidance record and will be kept confidential.</p>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="terms"
-                  checked={isTermsChecked}
-                  onCheckedChange={(checked) => setIsTermsChecked(checked === true)}
-                />
-                <label htmlFor="terms">I confirm that the information I have supplied is accurate and
-                  error-free</label>
-              </div>
+              <p>I confirm that the information I have supplied is accurate and error-free</p>
             </div>
             <div className=" rounded">
-              <h3 className="font-semibold mb-2">Form Summary</h3>
+              <h3 className="font-semibold mb-2">Form Upload</h3>
               <AttachmentField fileSetter={setFile}/>
+            </div>
+            <div className=" rounded">
+              <h3 className="font-semibold mb-2">Student Photo</h3>
+              <AttachmentField fileSetter={setPhoto} label='Upload the photo of the student'/>
             </div>
           </div>
         )}

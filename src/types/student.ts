@@ -9,6 +9,7 @@ export interface Student {
   gender: string;
   course: string;
   year: string;
+  idNumber: string;
   birthdate: string;
   mailingAddress: string;
   mailingContactNumber: string;
@@ -63,6 +64,7 @@ export interface Student {
   selfMotivationAnswer: string;
   decisionMakingAnswer: string;
   infoSheet: string
+  photo: string
 }
 
 export interface EducBackground {
@@ -94,6 +96,7 @@ export interface StudentFormFields {
   gender: string;
   course: string;
   year: string;
+  idNumber: string;
   birthdate: string;
   mailingAddress: string;
   mailingContactNumber: string;
@@ -148,6 +151,10 @@ export interface StudentFormFields {
   selfMotivationAnswer: string;
   decisionMakingAnswer: string;
   infoSheetPath: {
+    file: string,
+    path: string
+  };
+  photo: {
     file: string,
     path: string
   };

@@ -5,6 +5,7 @@ import './custom.css';
 
 type Props = {
   fileSetter: (file: { file: string; path: string }[]) => void;
+  label?: string;
 }
 
 const AttachmentField = (props: Props) => {
@@ -17,20 +18,20 @@ const AttachmentField = (props: Props) => {
   }, [filePaths]);
 
   return (
-    <div className="fv-row mb-8">
-      <label className="required form-label fs-5 py-2 text-muted-foreground">Upload the physical copy of the Cumulative Form should you have one</label>
+    <div className="fv-row mb-4">
+      <label className="required form-label fs-5 py-2 text-muted-foreground">{props.label ? props.label : 'Upload the physical copy of the Cumulative Form should you have one'}</label>
       <FilePond
         maxFiles={1}
         acceptedFileTypes={['image/png', 'image/jpeg', 'application/pdf']}
         files={files}
         labelFileLoading={'Loading...'}
         onupdatefiles={setFiles}
-        labelIdle='Please Upload the Consent Form'
+        labelIdle='Please Upload the File'
         name={'infoSheet'}
         server={{
           url: 'http://localhost:8000/api',
           process: {
-            url: '/upload/info-sheet',
+            url: `/upload/info-sheet${props.label ? '?dp=1' : ''}`,
             method: 'POST',
             withCredentials: false,
             onload: (response) => {

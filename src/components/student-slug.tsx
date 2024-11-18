@@ -3,26 +3,25 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Info } from 'lucide-react'
-import Image from "next/image"
 
 export function StudentSlugComponent() {
   return (
     <div className="container mx-auto p-4 space-y-6">
       <Card>
         <CardContent className="p-6">
-          <div className="grid md:grid-cols-[200px_1fr] gap-6">
+          <div className="grid md:grid-cols-[375px_1fr] gap-6">
             <div className="flex justify-center">
-              <Image
-                alt="Student profile picture"
-                className="rounded-lg object-cover"
-                height="200"
-                src="/placeholder.svg"
-                style={{
-                  aspectRatio: "200/200",
-                  objectFit: "cover",
-                }}
-                width="200"
-              />
+              {/*<Image*/}
+              {/*  alt="Student profile picture"*/}
+              {/*  className="rounded-lg object-cover"*/}
+              {/*  height="200"*/}
+              {/*  src="/placeholder.svg"*/}
+              {/*  style={{*/}
+              {/*    aspectRatio: "200/200",*/}
+              {/*    objectFit: "cover",*/}
+              {/*  }}*/}
+              {/*  width="200"*/}
+              {/*/>*/}
             </div>
             <div className="grid gap-4">
               <div className="grid gap-2">
