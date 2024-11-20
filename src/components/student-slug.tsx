@@ -163,14 +163,14 @@ export function StudentSlugComponent(props: Props) {
                       id="fatherLiving"
                       checked={student.fatherLiving === 1}
                     />
-                    <Label htmlFor="fatherLiving">Living</Label>
+                    <Label htmlFor="fatherLiving">{student.fatherLiving === 1 ? 'Living' : 'Deceased'}</Label>
                   </td>
                   <td className="gap-2 items-center">
                     <Checkbox
                       id="motherLiving"
                       checked={student.motherLiving === 1}
                     />
-                    <Label htmlFor="motherLiving">Living</Label>
+                    <Label htmlFor="motherLiving">{student.motherLiving === 1 ? 'Living' : 'Deceased'}</Label>
                   </td>
                 </tr>
                 <tr>
