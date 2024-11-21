@@ -587,13 +587,40 @@ export function StudentSlugComponent(props: Props) {
             <CardContent>
               <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="academicAchievements">Academic Achievements</Label>
-                  <Input id="academicAchievements" value="Dean's Lister, Hackathon Winner" readOnly/>
+                  <Label htmlFor="interests">Interests</Label>
+                  <Input id="interests" value={student.interest.join(", ")} readOnly/>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="extracurricularActivities">Extracurricular Activities</Label>
-                  <Input id="extracurricularActivities" value="Student Council, Robotics Club" readOnly/>
+                  <Label htmlFor="talents">Interests</Label>
+                  <Input id="talents" value={student.talents.join(", ")} readOnly/>
                 </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="characteristics">Characteristics</Label>
+                  <Input id="characteristics" value={student.characteristics.join(", ")} readOnly/>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="selfImage">How important am I?</Label>
+                  <Input id="selfImage" value={student.selfImageAnswer} readOnly/>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="motivation">Am I eager to start and end with my work? If yes, why? If no, why?</Label>
+                  <Input id="motivation" value={student.selfMotivationAnswer} readOnly/>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="decision">Do you usually make a decision alone or with a group? Why? When do you ask
+                    for help?</Label>
+                  <Input id="decision" value={student.decisionMakingAnswer} readOnly/>
+                </div>
+
+                {student.infoSheet && (
+                  <div className="grid gap-2">
+                    <h3 className="text-lg font-bold">Info Sheet</h3>
+                    <iframe
+                      className="w-full h-96"
+                      src={`${baseURL}/storage/${student.infoSheet}`}
+                      title="Info Sheet"/>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
