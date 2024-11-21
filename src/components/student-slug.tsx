@@ -55,7 +55,7 @@ export function StudentSlugComponent(props: Props) {
                 <div className="grid gap-2">
                   <Label htmlFor="studentName">Student Name</Label>
                   <Input id="studentName" value={
-                    `${student.lastName}, ${student.firstName} ${student.middleName}` || 'No Name Provided'
+                    `${student.lastName}, ${student.firstName} ${student.middleName || ''}` || 'No Name Provided'
                   } readOnly className="uppercase"/>
                 </div>
                 <div className="grid gap-2">
