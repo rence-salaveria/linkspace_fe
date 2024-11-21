@@ -7,7 +7,7 @@ import {Info} from 'lucide-react'
 import {Student} from "@/types/student.ts";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@/components/ui/button.tsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Checkbox} from "@radix-ui/react-checkbox";
 
 type Props = {
@@ -20,8 +20,15 @@ export function StudentSlugComponent(props: Props) {
 
   const student = props.student
 
+  const [studentPhoto, setStudentPhoto] = useState<string | null>(null)
+
   useEffect(() => {
-    console.log(student)
+    if (student.photo === null) {
+      setStudentPhoto(`${import.meta.env.BASE_URL}img.png`)
+    } else {
+      setStudentPhoto(`${baseURL}/storage/${student.photo}`)
+    }
+    console.log(studentPhoto)
   }, [student]);
 
   return (
@@ -35,7 +42,7 @@ export function StudentSlugComponent(props: Props) {
                 alt="Student profile picture"
                 className="rounded-lg object-cover"
                 height="200"
-                src={`${baseURL}/storage/${student.photo}`}
+                src={studentPhoto}
                 style={{
                   aspectRatio: "200/200",
                   objectFit: "cover",
