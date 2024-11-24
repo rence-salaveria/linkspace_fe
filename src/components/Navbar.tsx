@@ -8,8 +8,19 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import toast from "react-hot-toast";
+import axios from "@/lib/axios.ts";
 
 const Navbar = () => {
+  const logout = async () => {
+    toast.success("Logged out successfully");
+    localStorage.removeItem("user");
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+  }
+
   return (
     <header className="sticky top-4 z-50 w-full flex justify-center">
       <div className="container max-w-8xl">
@@ -33,7 +44,7 @@ const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
+                  <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </nav>
