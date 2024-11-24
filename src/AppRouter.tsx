@@ -29,7 +29,7 @@ function AppRouter() {
         <Route path="/student/:id" element={<StudentPage/>}/>
 
         <Route path="/add" element={<Outlet />}>
-          <Route path="/add/students" element={<AddStudent />} />
+          <Route path="/add/student" element={<AddStudent />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" />} />
