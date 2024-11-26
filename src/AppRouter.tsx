@@ -20,9 +20,9 @@ function AppRouter() {
 
         <Route path="/table" element={<Outlet />}>
           <Route path="/table/student" element={<StudentsTable />} />
-          <Route path="/table/consultation" element={<ConsultationsTable />} />
-          <Route path="/table/today-consultation" element={<TodayConsultationsTable />} />
-          <Route path="/table/consultation-history" element={<ConsultationHistoryTable />} />
+          <Route path="/table/consultation" element={<ConsultationsTable type="pending"/>} />
+          <Route path="/table/today-consultation" element={<ConsultationsTable type="today"/>} />
+          <Route path="/table/consultation-history" element={<ConsultationsTable type="done"/>} />
           <Route path="/table/audit-trail" element={<AuditTrailTable />} />
         </Route>
 

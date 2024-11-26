@@ -8,14 +8,18 @@ import {ReusableTableComponent} from "@/components/reusable-table.tsx";
 import {createColumnHelper} from "@tanstack/react-table";
 import {FaRegPenToSquare} from "react-icons/fa6";
 
-const ConsultationsTable = () => {
+type Props = {
+  type: "pending" | "today" | "done"
+}
+
+const ConsultationsTable = (props: Props) => {
   const [user] = useState<User>(JSON.parse(localStorage.getItem("user") || "{}"));
   const columnHelper = createColumnHelper<Consultation>();
 
   const {data, isFetching} = useQuery<Consultation[]>({
     queryKey: ['consultation', user],
     queryFn: async () => {
-      const res = await axios.get(`/consultation/${user.id}`);
+      const res = await axios.get(`/consultation/${user.id}?type=${props.type}`);
       if (res) {
         console.log(res.data.payload);
         return res.data.payload;

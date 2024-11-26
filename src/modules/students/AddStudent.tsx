@@ -9,7 +9,7 @@ const AddStudent = () => {
       <Navbar/>
       <div className="flex items-center justify-between w-[80%]">
         <h1 className="text-3xl font-bold pt-12 pb-8 text-white">Add a New Student</h1>
-        <Link to={'/table/students'}>
+        <Link to={'/table/student'}>
           <Button>
             Go back
           </Button>

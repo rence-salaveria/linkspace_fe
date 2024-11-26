@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {useNavigate} from "react-router-dom";
 
 interface Column<T> {
   header: string;
@@ -19,6 +20,7 @@ export function ReusableTableComponent<T extends Record<string, any>>({
                                                                         tableTitle,
                                                                       }: ReusableTableProps<T>) {
   const [filterText, setFilterText] = useState('');
+  const navigate = useNavigate();
 
   const filteredData = useMemo(() => {
     return data.filter((item) =>
@@ -46,13 +48,20 @@ export function ReusableTableComponent<T extends Record<string, any>>({
           <h2 className="text-2xl font-semibold leading-tight text-white">
             {tableTitle || 'Table'}
           </h2>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-            className="px-4 py-2 border rounded"
-          />
+          <div className="flex flex-row gap-4 items-center justify-center">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+              className="px-4 py-2 border rounded"
+            />
+            {tableTitle === 'Students' && (
+              <button
+                className="px-4 py-2 bg-primary text-white rounded"
+                onClick={() => navigate('/add/student')}>Add Student</button>
+            )}
+          </div>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
