@@ -6,7 +6,7 @@ import {useState} from "react";
 import {User} from "@/types/user.ts";
 import {ReusableTableComponent} from "@/components/reusable-table.tsx";
 import {createColumnHelper} from "@tanstack/react-table";
-import {FaRegPenToSquare} from "react-icons/fa6";
+import {FaFile, FaRegPenToSquare} from "react-icons/fa6";
 
 type Props = {
   type: "pending" | "today" | "done"
@@ -84,16 +84,28 @@ const ConsultationsTable = (props: Props) => {
     columnHelper.display({
       id: 'actions',
       header: () => 'Actions',
-      cell: (row) => (
-        <div className="text-center">
-          <button
-            className="px-2 py-2 bg-primary text-white rounded text-center"
-            onClick={() => handleActionClick(row.row.original)}
-          >
-            <FaRegPenToSquare/>
-          </button>
-        </div>
-      )
+      cell: (row) => {
+        const status = row.row.original.status;
+        return (
+          <div className="text-center">
+            {status === 'LookUp-003' ? (
+              <button
+                className="px-2 py-2 bg-green-500 text-white rounded text-center"
+                onClick={() => handleViewClick(row.row.original)}
+              >
+                <FaFile />
+              </button>
+            ) : (
+              <button
+                className="px-2 py-2 bg-primary text-white rounded text-center"
+                onClick={() => handleActionClick(row.row.original)}
+              >
+                <FaRegPenToSquare />
+              </button>
+            )}
+          </div>
+        );
+      }
     })
   ];
 
@@ -101,6 +113,10 @@ const ConsultationsTable = (props: Props) => {
     // Define your action here
     console.log('Action clicked for consultation:', consultation);
   };
+
+  const handleViewClick = (consultation: Consultation) => {
+
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center">
