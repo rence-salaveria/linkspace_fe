@@ -7,6 +7,15 @@ import {User} from "@/types/user.ts";
 import {ReusableTableComponent} from "@/components/reusable-table.tsx";
 import {createColumnHelper} from "@tanstack/react-table";
 import {FaFile, FaRegPenToSquare} from "react-icons/fa6";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import Loading from "@/components/Loading.tsx";
 
 type Props = {
   type: "pending" | "today" | "done"
@@ -73,11 +82,11 @@ const ConsultationsTable = (props: Props) => {
         const value = row.getValue();
         return (
           <span
-            className={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-full ${value === 'LookUp-001' ? 'bg-gray-500 text-white' : 'bg-primary text-white'}`}>
-            <span aria-hidden
-                  className={`absolute inset-0 ${value === 'LookUp-001' ? 'bg-gray-500' : 'bg-primary'} opacity-50 rounded-full`}></span>
-            <span className="relative">{value === 'LookUp-001' ? 'Draft' : 'Scheduled'}</span>
-          </span>
+            className={`relative inline-block px-3 py-1 font-semibold leading-tight rounded-full ${value === 'LookUp-001' ? 'bg-gray-500 text-white' : value === 'LookUp-002' ? 'bg-primary text-white' : 'bg-green-500 text-white'}`}>
+        <span aria-hidden
+              className={`absolute inset-0 ${value === 'LookUp-001' ? 'bg-gray-500' : value === 'LookUp-002' ? 'bg-primary' : 'bg-green-500'} opacity-50 rounded-full`}></span>
+        <span className="relative">{value === 'LookUp-001' ? 'Pending' : value === 'LookUp-002' ? 'Scheduled' : 'Done'}</span>
+      </span>
         );
       }
     }),
@@ -90,17 +99,17 @@ const ConsultationsTable = (props: Props) => {
           <div className="text-center">
             {status === 'LookUp-003' ? (
               <button
-                className="px-2 py-2 bg-green-500 text-white rounded text-center"
+                className="px-2 py-2 bg-primary text-white rounded text-center"
                 onClick={() => handleViewClick(row.row.original)}
               >
-                <FaFile />
+                <FaFile/>
               </button>
             ) : (
               <button
                 className="px-2 py-2 bg-primary text-white rounded text-center"
                 onClick={() => handleActionClick(row.row.original)}
               >
-                <FaRegPenToSquare />
+                <FaRegPenToSquare/>
               </button>
             )}
           </div>
@@ -108,6 +117,8 @@ const ConsultationsTable = (props: Props) => {
       }
     })
   ];
+
+  const [showDialog, setShowDialog] = useState(true);
 
   const handleActionClick = (consultation: Consultation) => {
     // Define your action here
@@ -118,14 +129,15 @@ const ConsultationsTable = (props: Props) => {
 
   }
 
+
   return (
     <div className="flex min-h-screen flex-col items-center">
       <div className="container py-6">
         <Navbar/>
         <main className="flex-1 w-full flex justify-center">
-          {isFetching ? <div className="text-white">Loading...</div> : (
+          {isFetching ? <div className="text-white"><Loading/></div> : (
             // @ts-ignore
-            <ReusableTableComponent data={data ? data : []} columns={columns} tableTitle="Consultations"/>
+            <ReusableTableComponent data={data ? data : []} columns={columns} tableTitle="Consultations" type={props.type}/>
           )}
         </main>
       </div>

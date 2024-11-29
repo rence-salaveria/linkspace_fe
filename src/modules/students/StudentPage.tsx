@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import axios from "@/lib/axios.ts";
 import {Student} from "@/types/student.ts";
+import Loading from "@/components/Loading.tsx";
 
 const StudentPage = () => {
   const {id} = useParams();
@@ -22,7 +23,7 @@ const StudentPage = () => {
 
   return (
     <div>
-      {isFetching ? <div>Loading...</div> : <StudentSlugComponent student={data}/>}
+      {isFetching ? <Loading/> : <StudentSlugComponent student={data}/>}
     </div>
   );
 };

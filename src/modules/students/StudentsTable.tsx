@@ -9,6 +9,7 @@ import {FaRegPenToSquare} from "react-icons/fa6";
 import {ReusableTableComponent} from "@/components/reusable-table.tsx";
 import {FaRegStickyNote} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
+import Loading from "@/components/Loading.tsx";
 
 const StudentsTable = () => {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ const StudentsTable = () => {
       <div className="container py-6">
         <Navbar/>
         <main className="flex-1 w-full flex justify-center">
-          {isFetching ? <div className="text-white">Loading...</div> : (
+          {isFetching ? <Loading/> : (
             // @ts-ignore
             <ReusableTableComponent data={data ? data : []} columns={columns} tableTitle="Students"/>
           )}
