@@ -65,8 +65,8 @@ const ConsultationsTable = (props: Props) => {
         return `${student.course} - Year ${student.year}`;
       }
     }),
-    columnHelper.accessor("scheduleDate", {
-      header: () => "Schedule Date and Time",
+    columnHelper.accessor("createdAt", {
+      header: () => "Date Created",
       cell: (row) => new Date(row.getValue()).toLocaleString('en-US', {
         year: 'numeric',
         month: '2-digit',
@@ -75,6 +75,20 @@ const ConsultationsTable = (props: Props) => {
         minute: '2-digit',
         hour12: true
       })
+    }),
+    columnHelper.accessor("scheduleDate", {
+      header: () => "Schedule Date and Time",
+      cell: (row) => {
+        const scheduleDate = row.getValue();
+        return scheduleDate ? new Date(scheduleDate).toLocaleString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        }) : 'No Schedule Yet';
+      }
     }),
     columnHelper.accessor("status", {
       header: () => "Status",

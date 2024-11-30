@@ -19,6 +19,7 @@ import {useQuery} from "@tanstack/react-query";
 import axios from "@/lib/axios.ts";
 import toast from "react-hot-toast";
 import {Textarea} from "@/components/ui/textarea.tsx";
+import {format, formatISO} from 'date-fns';
 
 interface Column<T> {
   header: string;
@@ -146,22 +147,23 @@ function AddConsultationDialog() {
     },
   });
 
+
   const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
   const [scheduleDate, setScheduleDate] = useState<Date | null>(null);
   const [concern, setConcern] = useState<string>('');
   const [counselorComment, setCounselorComment] = useState<string>('');
 
   const handleSubmit = async () => {
-    if (selectedStudent && scheduleDate && concern && counselorComment) {
-      // Add consultation API call
+    if (selectedStudent && concern && counselorComment) {
+      const response = await toast.promise(axios.post("/consultation/create", {selectedStudent,scheduleDate,concern, counselorComment}), {
+        success: "Added consultation successfully",
+        error: "Failed to add consultation",
+        loading: "Adding consultation..."
+      })
     } else {
       toast.error('Please fill out all fields');
     }
   }
-
-  useEffect(() => {
-    console.log(selectedStudent)
-  }, [selectedStudent]);
 
   return (
     <Dialog>
@@ -190,7 +192,7 @@ function AddConsultationDialog() {
               id="scheduleDate"
               type="datetime-local"
               className="col-span-3"
-              value={scheduleDate ? scheduleDate.toISOString().split('T')[0] : ''}
+              value={scheduleDate ? format(scheduleDate, "yyyy-MM-dd'T'HH:mm") : ''}
               onChange={(e) => setScheduleDate(e.target.value ? new Date(e.target.value) : null)}
             />
           </div>
@@ -202,6 +204,7 @@ function AddConsultationDialog() {
               id="concern"
               className="col-span-3"
               value={concern}
+              placeholder={"Enter the student's concern here"}
               onChange={(e) => setConcern(e.target.value)}
             />
           </div>
@@ -212,6 +215,7 @@ function AddConsultationDialog() {
             <Textarea
               id="counselorComment"
               className="col-span-3"
+              placeholder={"Enter your comment here"}
               value={counselorComment}
               onChange={(e) => setCounselorComment(e.target.value)}
             />
