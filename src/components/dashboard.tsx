@@ -15,7 +15,7 @@ import {useNavigate} from "react-router-dom";
 
 type DashboardData = {
   history: number,
-  todayConsultation: number,
+  todayConsultations: number,
   consultation: number,
   student: number,
   audit: number,
@@ -30,6 +30,7 @@ export function Dashboard() {
     queryFn: async () => {
       const res = await axios.get('/dashboard-info')
       if (res) {
+        console.log(res.data.payload)
         return res.data.payload
       } else {
         console.error("No dashboard data")
@@ -89,7 +90,7 @@ export function Dashboard() {
                 <FaRegClock className="text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data?.todayConsultation || 0}</div>
+                <div className="text-2xl font-bold">{data?.todayConsultations || 0}</div>
                 <p className="text-xs text-muted-foreground">
                   this day
                 </p>
