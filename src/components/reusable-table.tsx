@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {flexRender, getCoreRowModel, useReactTable} from '@tanstack/react-table';
 import {useNavigate} from "react-router-dom";
 import {Button} from "@/components/ui/button"
@@ -31,13 +31,14 @@ interface ReusableTableProps<T> {
   columns: Column<T>[];
   tableTitle?: string;
   type?: "pending" | "today" | "done" | null;
+  setFlag: (flag: (prev) => any) => void;
 }
 
 export function ReusableTableComponent<T extends Record<string, any>>({
                                                                         data,
                                                                         columns,
                                                                         tableTitle,
-                                                                        type
+                                                                        type, setFlag
                                                                       }: ReusableTableProps<T>) {
   const [filterText, setFilterText] = useState('');
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ export function ReusableTableComponent<T extends Record<string, any>>({
                 onClick={() => navigate('/add/student')}>Add Student</button>
             )}
             {tableTitle === 'Consultations' && type === 'pending' && (
-              <AddConsultationDialog/>
+              <AddConsultationDialog setFlag={setFlag}/>
             )}
           </div>
         </div>
@@ -133,7 +134,9 @@ export function ReusableTableComponent<T extends Record<string, any>>({
   );
 }
 
-function AddConsultationDialog() {
+function AddConsultationDialog(props: {
+  setFlag: (flag: (prev) => any) => void;
+}) {
   const {data, isFetching} = useQuery({
     queryKey: ['student'],
     queryFn: async () => {
@@ -152,6 +155,14 @@ function AddConsultationDialog() {
   const [concern, setConcern] = useState<string>('');
   const [counselorComment, setCounselorComment] = useState<string>('');
 
+  const dialogRef = useRef(null);
+
+  const closeDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
+    }
+  };
+
   const handleSubmit = async () => {
     if (selectedStudent && concern && counselorComment) {
       const response = await toast.promise(axios.post("/consultation/create", {
@@ -164,6 +175,10 @@ function AddConsultationDialog() {
         error: "Failed to add consultation",
         loading: "Adding consultation..."
       })
+
+      props.setFlag(prev => prev + 1);
+
+      closeDialog()
     } else {
       toast.error('Please fill out all fields');
     }

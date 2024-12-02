@@ -5,7 +5,7 @@ export interface Consultation {
   updatedAt: string
   id: number
   scheduleDate: any
-  status: "LookUp-001" | "LookUp-002" | "LookUp-003"
+  status: "LookUp-001" | "LookUp-002" | "LookUp-003" | "LookUp-004"
   concern: string
   counselorComment: string
   counselorId: number
