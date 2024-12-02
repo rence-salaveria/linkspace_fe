@@ -1,7 +1,7 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {flexRender, getCoreRowModel, useReactTable} from '@tanstack/react-table';
 import {useNavigate} from "react-router-dom";
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -11,15 +11,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {Consultation} from "@/types/consultation.ts";
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
 import StudentDropdown from "@/components/StudentDropdown.tsx";
 import {useQuery} from "@tanstack/react-query";
 import axios from "@/lib/axios.ts";
 import toast from "react-hot-toast";
 import {Textarea} from "@/components/ui/textarea.tsx";
-import {format, formatISO} from 'date-fns';
+import {format} from 'date-fns';
 
 interface Column<T> {
   header: string;
@@ -67,7 +66,7 @@ export function ReusableTableComponent<T extends Record<string, any>>({
       <div className="py-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold leading-tight text-white">
-            {tableTitle || 'Table'}
+            {type === 'pending' ? "Pending" : ""} {tableTitle || 'Table'} {type === 'done' ? "History" : ""} {type === 'today' ? "Today" : ""}
           </h2>
           <div className="flex flex-row gap-4 items-center justify-center">
             <input
@@ -108,7 +107,7 @@ export function ReusableTableComponent<T extends Record<string, any>>({
                 <tbody>
                 {filteredData.length === 0 ? (
                   <tr>
-                    <td colSpan={columns.length} className="text-center">No data yet</td>
+                    <td colSpan={columns.length} className="text-center bg-white">No data yet</td>
                   </tr>
                 ) : (
                   table.getRowModel().rows.map((row) => (
@@ -155,7 +154,12 @@ function AddConsultationDialog() {
 
   const handleSubmit = async () => {
     if (selectedStudent && concern && counselorComment) {
-      const response = await toast.promise(axios.post("/consultation/create", {selectedStudent,scheduleDate,concern, counselorComment}), {
+      const response = await toast.promise(axios.post("/consultation/create", {
+        selectedStudent,
+        scheduleDate,
+        concern,
+        counselorComment
+      }), {
         success: "Added consultation successfully",
         error: "Failed to add consultation",
         loading: "Adding consultation..."
