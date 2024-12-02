@@ -1,11 +1,8 @@
 import Navbar from "@/components/Navbar.tsx";
-import {useEffect, useState} from "react";
-import {User} from "@/types/user.ts";
 import {createColumnHelper} from "@tanstack/react-table";
 import {Student} from "@/types/student.ts";
 import {useQuery} from "@tanstack/react-query";
 import axios from "@/lib/axios.ts";
-import {FaRegPenToSquare} from "react-icons/fa6";
 import {ReusableTableComponent} from "@/components/reusable-table.tsx";
 import {FaRegStickyNote} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";

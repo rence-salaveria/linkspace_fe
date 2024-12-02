@@ -31,7 +31,7 @@ interface ReusableTableProps<T> {
   columns: Column<T>[];
   tableTitle?: string;
   type?: "pending" | "today" | "done" | null;
-  setFlag: (flag: (prev) => any) => void;
+  setFlag?: (flag: (prev) => any) => void;
 }
 
 export function ReusableTableComponent<T extends Record<string, any>>({
@@ -224,6 +224,7 @@ function AddConsultationDialog(props: {
               className="col-span-3"
               value={concern}
               placeholder={"Enter the student's concern here"}
+              rows={4}
               onChange={(e) => setConcern(e.target.value)}
             />
           </div>
@@ -236,6 +237,7 @@ function AddConsultationDialog(props: {
               className="col-span-3"
               placeholder={"Enter your comment here"}
               value={counselorComment}
+              rows={4}
               onChange={(e) => setCounselorComment(e.target.value)}
             />
           </div>

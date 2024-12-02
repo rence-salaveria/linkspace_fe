@@ -11,6 +11,7 @@ import {StudentFormFields} from "@/types/student.ts";
 import Creatable, {useCreatable} from 'react-select/creatable';
 import axios from "@/lib/axios.ts";
 import toast from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
 
 export function MultiStepFormComponent() {
   const [step, setStep] = useState(1)
@@ -163,13 +164,15 @@ export function MultiStepFormComponent() {
     setStudentFormData(prev => ({...prev, photo: photo[0]}))
   }, [file, photo]);
 
-
+  const navigate = useNavigate()
   const handleSubmit = async () => {
     const response = await toast.promise(axios.post("/student/add", studentFormData), {
       success: "Added student successfully",
       error: (e) => `Failed to add student: ${e.message}`,
       loading: "Adding student..."
     })
+
+    navigate('/table/student')
   }
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 5))

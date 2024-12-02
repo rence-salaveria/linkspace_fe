@@ -224,7 +224,11 @@ function ViewConsultationDialog(props: SubProps) {
   }
 
   const handleComplete = async () => {
-    const response = await toast.promise(axios.post(`/consultation/complete/${props.consultation.id}`), {
+    const response = await toast.promise(axios.post(`/consultation/complete/${props.consultation.id}`, {
+      scheduleDate,
+      concern,
+      counselorComment
+    }), {
       success: "Consultation completed successfully",
       error: "Failed to complete consultation",
       loading: "Completing consultation..."
@@ -246,7 +250,7 @@ function ViewConsultationDialog(props: SubProps) {
           {props.mode === 'view' ? <FaFile/> :  <FaRegPenToSquare/>}
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>{props.mode === 'view' ? 'View' : 'Edit'} Consultation</DialogTitle>
           <DialogDescription>
@@ -287,6 +291,7 @@ function ViewConsultationDialog(props: SubProps) {
               value={concern}
               disabled={props.mode === 'view'}
               placeholder={"Enter the student's concern here"}
+              rows={4}
               onChange={(e) => setConcern(e.target.value)}
             />
           </div>
@@ -300,6 +305,7 @@ function ViewConsultationDialog(props: SubProps) {
               placeholder={"Enter your comment here"}
               value={counselorComment}
               disabled={props.mode === 'view'}
+              rows={4}
               onChange={(e) => setCounselorComment(e.target.value)}
             />
           </div>
@@ -307,11 +313,13 @@ function ViewConsultationDialog(props: SubProps) {
         <DialogFooter>
           {props.mode === 'edit' && (
             <div>
-              <Button variant="destructive" type="button" onClick={handleCancel} className="me-2">Cancel Consultation</Button>
-              {isToday(props.consultation.scheduleDate) && props.cardName === 'today-consultation' ? (
-                <Button type="button" className="bg-success" onClick={handleComplete}>Complete</Button>
-              ) : (
-                <Button type="button" onClick={handleSubmit}>Save changes</Button>
+              <Button variant="destructive" type="button" onClick={handleCancel} className="me-2">Cancel
+                Consultation</Button>
+              <Button type="button" className="me-2" onClick={handleSubmit}>Save changes</Button>
+              {isToday(props.consultation.scheduleDate) && props.cardName === 'today-consultation' && (
+                <>
+                  <Button type="button" className="bg-success" onClick={handleComplete}>Complete</Button>
+                </>
               )}
             </div>
           )}
