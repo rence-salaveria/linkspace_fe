@@ -795,7 +795,7 @@ export function MultiStepFormComponent() {
             </table>
 
             <div className="mt-4">
-              <Label htmlFor="monthlyIncome">Monthly Income</Label>
+              <Label htmlFor="monthlyIncome">Monthly Income (Don't include commas)</Label>
               <Input
                 id="monthlyIncome"
                 value={studentFormData.monthlyIncome}
@@ -1249,7 +1249,7 @@ export function MultiStepFormComponent() {
                 this
                 information later.</p>
               <p>This form also serves as your guidance record and will be kept confidential.</p>
-              <p>I confirm that the information I have supplied is accurate and error-free</p>
+              <p className='font-bold'>Submitting this form confirms that the information that you have supplied is accurate and error-free</p>
             </div>
             <div className=" rounded">
               <h3 className="font-semibold mb-2">Form Upload</h3>
@@ -1257,7 +1257,7 @@ export function MultiStepFormComponent() {
             </div>
             <div className=" rounded">
               <h3 className="font-semibold mb-2">Student Photo</h3>
-              <AttachmentField fileSetter={setPhoto} label='Upload the photo of the student'/>
+              <AttachmentField fileSetter={setPhoto} label='Upload the photo of the student (Image files onl'/>
             </div>
           </div>
         )}

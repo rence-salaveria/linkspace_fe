@@ -15,7 +15,7 @@ type Props = {
 }
 
 export function StudentSlugComponent(props: Props) {
-  const baseURL = "http://localhost:8000"
+  const baseURL = import.meta.env.VITE_API_URL || "http://144.126.214.90/"
   const navigate = useNavigate()
 
   const student = props.student
