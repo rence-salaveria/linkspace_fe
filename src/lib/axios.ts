@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api" // Fallback to default URL if VITE_API_URL is not set
+  baseURL: import.meta.env.VITE_API_URL || "https://144.126.214.90/api" // Fallback to default URL if VITE_API_URL is not set
 });
 
 // Add a request interceptor to include the user information
